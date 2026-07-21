@@ -1,5 +1,5 @@
 include README.md
-graft docassemble/MAHousingTRO/data
+graft docassemble/MAEmergencyHousingRelief/data
 recursive-exclude * *.egg-info
 recursive-exclude .git *
 recursive-exclude venv *

@@ -5,12 +5,12 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "docassemble.MAHousingTRO"
-version = "2.2.5"
+name = "docassemble.MAEmergencyHousingRelief"
+version = "1.0.0"
 description = "This form lets you ask the court for emergency help if your landlord is not fixing bad conditions in your apartment, your utilities are shut off, or your landlord is doing something else to breach your right to \"quiet enjoyment\" of your home."
 readme = "README.md"
 authors = [
-    { name = "Quinten Steenhuis", email = "qsteenhuis@suffolk.edu" },
+    { name = "Pedro Barbosa", email = "pedro.barbosa@su.suffolk.edu" },
 ]
 dependencies = [
     "docassemble.ALMassachusetts @ git+https://github.com/suffolklitlab/docassemble-ALMassachusetts.git@main",
