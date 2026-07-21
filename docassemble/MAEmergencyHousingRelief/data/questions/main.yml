@@ -79,10 +79,11 @@ data:
   - getting_started: Get started
   - immediate_danger: Are you in immediate danger?
   - eligibility_screening: Eligibility
-  - case_informaiton: Case information
-  - court_selection: Court selection
   - your_information: Your information
   - landlord_information: Landlord information 
+  - court_selection: Court selection
+  - case_information: Case information
+  - emergency_relief: Request emergency relief
   - review_answers: Review answers
   - signature_and_submit: Sign and submit
   - download_next_steps: Download & next step
@@ -115,7 +116,7 @@ code: |
   defendants[0].email
   defendants[0].phone_number
   
-  nav.set_section("court_information")
+  nav.set_section("court_selection")
   trial_court
   nav.set_section("case_information")
   docket_number
@@ -123,7 +124,8 @@ code: |
   utilities_needed
   stop_fail_repairs
   uptocode_referral_complete  
-  
+
+  nav.set_section("emergency_relief")
   emergency_relief_timing_warning
   issue_a_tro
   issue_a_son
@@ -727,6 +729,10 @@ fields:
   - 'Do you want to request a Short Order of Notice?': issue_a_son
     datatype: yesnoradio
 ---
+terms:
+  notice: |
+    A notice means officially telling your landlord about a legal action so they know what is happening and has a fair chance to try and fix the problem before going to court.
+---
 id: request a preliminary injunction
 question: |
   It sounds like you may need to request a Preliminary Injunction
@@ -734,17 +740,23 @@ subquestion: |
   Based on what you have told us, it sounds like you may benefit in requesting a Preliminary Injunction.
   
   #####What is a Preliminary Injunction?
-  A Preliminary Injunction is a court order that tells your landlord to stop their harmful actions. The order must be specific, clear, and state what your landlord needs to stop doing. 
+  A court order that tells your landlord to stop a harmful action. It must be clear and specific about what they need to stop doing. 
+
+  **How is it different from a Temporary Restraining Order?**
+  You must notify your landlord of this legal action and the injunction may last longer than 10 days.  
+
+  **Will the judge automatically grant it?**
+  No. The judge will weigh: 
   
-  Unlike a temporary restraining order, you would need to provide notice to your landlord if you request a preliminary injunction.
-
-  Why is this important?
-  A judge will not grant this order automatically, before saying yes the judge looks at:
   1. How likely you are to win your case
-  2. How much harm you would face if the judge said no
+  2. How much harm you would face if they said no
 
-  How would a Preliminary Injunction benefit you?
-  If granted, a preliminary injunction can protect you right away without having for the judgement after a full trial. For example it could:
+  If the judge does not think you would be greatly harmed, they may reject your request. 
+
+  **How would a Preliminary Injunction benefit you?**
+  The order can protect you right away without having to wait for a full trial. 
+  
+  For example it could:
 
   % if utilities_needed:
   * Stop your landlord from shutting off your utilities
