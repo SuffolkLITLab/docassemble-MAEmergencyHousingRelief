@@ -43,10 +43,10 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
                 out.setdefault(package, []).append(prefix+name)
     return out
 
-setup(name='docassemble.MAHousingTRO',
-      version='2.2.5',
+setup(name='docassemble.MAEmergencyHousingRelief',
+      version='1.0.0',
       description=('This form lets you ask the court for emergency help if your landlord is not fixing bad conditions in your apartment, your utilities are shut off, or your landlord is doing something else to breach your right to "quiet enjoyment" of your home.'),
-      long_description='# A Docassemble interview for a Massachusetts Request for a Temporary Restraining Order\n\nThis form lets you ask the court for emergency help if your landlord is not fixing bad conditions in your apartment, your utilities are shut off, or your landlord is doing something else to breach your right to "quiet enjoyment" of your home. The live interview can be found at [https://www.courtformsonline.org/housing/#TRO](https://www.courtformsonline.org/housing/#TRO).\n\n## Author\n\n- Quinten Steenhuis\n- Caroline Robinson\n- Kate Barry\n- Plocket\n- Lily Yang\n- Matthew Brooks\n- Lance Godard\n- Maeve MacGlinchey\n- Kendall Garner\n- David Colarusso\n- Pedro Barbosa\n- Shivani Dahya',
+      long_description='# A Docassemble interview for a Massachusetts Request for a A Verified Complaint and Request for Emergency Relief\r\n\r\nThis form lets you ask the court for emergency help if your landlord is not fixing bad conditions in your apartment, your utilities are shut off, or your landlord is doing something else to breach your right to "quiet enjoyment" of your home. \r\n\r\n## Author\r\n\r\n- Quinten Steenhuis\r\n- Caroline Robinson\r\n- Kate Barry\r\n- Plocket\r\n- Lily Yang\r\n- Matthew Brooks\r\n- Lance Godard\r\n- Maeve MacGlinchey\r\n- Kendall Garner\r\n- David Colarusso\r\n- Pedro Barbosa\r\n- Shivani Dahya',
       long_description_content_type='text/markdown',
       author='Quinten Steenhuis',
       author_email='qsteenhuis@suffolk.edu',
@@ -55,5 +55,5 @@ setup(name='docassemble.MAHousingTRO',
       packages=find_namespace_packages(),
       install_requires=['docassemble.ALMassachusetts @ git+https://github.com/suffolklitlab/docassemble-ALMassachusetts.git@main', 'docassemble.AssemblyLine @ git+https://github.com/SuffolkLITLab/docassemble-AssemblyLine.git@main', 'docassemble.MassAccess @ git+https://github.com/SuffolkLITLab/docassemble-MassAccess.git@main'],
       zip_safe=False,
-      package_data=find_package_data(where='docassemble/MAHousingTRO/', package='docassemble.MAHousingTRO'),
+      package_data=find_package_data(where='docassemble/MAEmergencyHousingRelief/', package='docassemble.MAEmergencyHousingRelief'),
      )
