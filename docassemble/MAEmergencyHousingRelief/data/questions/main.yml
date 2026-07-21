@@ -102,7 +102,6 @@ code: |
   screening_finished
   screening_2_finished
   nav.set_section ("your_information")
-  
   user_role = "plaintiff"
   user_ask_role = "plaintiff"
   plaintiffs.gather()
@@ -114,19 +113,18 @@ code: |
   defendants[0].address.address
   defendants[0].email
   defendants[0].phone_number
-  
   nav.set_section("court_information")
   trial_court
-  docket_number
   nav.set_section("case_information")
+  docket_number
   facts_description
   utilities_needed
   stop_fail_repairs
-  uptocode_referral_complete
-  
+  uptocode_referral_complete  
   emergency_relief_timing_warning
   issue_a_tro
   issue_a_son
+  request_pi
   issue_tro
   if issue_tro:
       waiver_yes_no
@@ -138,7 +136,6 @@ code: |
           doesnt_qualify_interstitial
       case_name
       affidavit_of_indigency_filing_court
-  
   nav.set_section("review_answers")
   verified_complaint_and_request_for_preview_question
   nav.set_section("signature_and_submit")
@@ -708,10 +705,10 @@ subquestion: |
   #####What is a Short Order of Notice?
   A Short Order of Notice is a procedural tool used to bypass standard court timelines when a matter is urgent. Typically, courts require you to give a landlord a specific amount of advance notice before a hearing.
 
-  Why is this important?
+  **Why is this important?**
   If you are facing an emergency, you cannot wait the standard amount of time. This asks the court to shrink that waiting period, allowing the judge to hear your emergency request much sooner.
 
-  How would a Short Order of Notice benefit you?
+  **How would a Short Order of Notice benefit you?**
   It allows you to get in front of a judge faster to ask them to:
 
   % if violation_breach_contract:
@@ -732,6 +729,39 @@ subquestion: |
   
 fields:
   - 'Do you want to request a Short Order of Notice?': issue_a_son
+    datatype: yesnoradio
+---
+id: request a preliminary injunction
+question: |
+  It sounds like you may need to request a Preliminary Injunction
+subquestion: |
+  Based on what you have told us, it sounds like you may benefit in requesting a Preliminary Injunction.
+  
+  #####What is a Preliminary Injunction?
+  A Preliminary Injunction is a court order that tells your landlord to stop their harmful actions. The order must be specific, clear, and state what your landlord needs to stop doing. 
+  
+  Unlike a temporary restraining order, you would need to provide notice to your landlord if you request a preliminary injunction.
+
+  Why is this important?
+  A judge will not grant this order automatically, before saying yes the judge looks at:
+  1. How likely you are to win your case
+  2. How much harm you would face if the judge said no
+
+  How would a Preliminary Injunction benefit you?
+  If granted, a preliminary injunction can protect you right away without having for the judgement after a full trial. For example it could:
+
+  % if utilities_needed:
+  * Stop your landlord from shutting off your utilities
+  % endif
+  % if violation_bad_conditions:
+  * Order your landlord to make emergency repairs 
+  % endif
+  % if stop_eviction:
+  * Stop your landlord from trying to evict you from your home
+  % endif
+  
+fields:
+  - 'Do you want to request a Preliminary Injunction?': request_pi
     datatype: yesnoradio
 ---
 id: Mass Civ Pro
