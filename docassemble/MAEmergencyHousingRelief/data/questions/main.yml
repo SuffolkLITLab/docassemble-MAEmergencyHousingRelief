@@ -101,6 +101,7 @@ code: |
   eviction_flow_complete
   screening_finished
   screening_2_finished
+  
   nav.set_section ("your_information")
   user_role = "plaintiff"
   user_ask_role = "plaintiff"
@@ -113,6 +114,7 @@ code: |
   defendants[0].address.address
   defendants[0].email
   defendants[0].phone_number
+  
   nav.set_section("court_information")
   trial_court
   nav.set_section("case_information")
@@ -121,10 +123,11 @@ code: |
   utilities_needed
   stop_fail_repairs
   uptocode_referral_complete  
+  
   emergency_relief_timing_warning
   issue_a_tro
   issue_a_son
-  request_pi
+  request_a_pi
   issue_tro
   if issue_tro:
       waiver_yes_no
@@ -136,6 +139,7 @@ code: |
           doesnt_qualify_interstitial
       case_name
       affidavit_of_indigency_filing_court
+  
   nav.set_section("review_answers")
   verified_complaint_and_request_for_preview_question
   nav.set_section("signature_and_submit")
@@ -761,7 +765,7 @@ subquestion: |
   % endif
   
 fields:
-  - 'Do you want to request a Preliminary Injunction?': request_pi
+  - 'Do you want to request a Preliminary Injunction?': request_a_pi
     datatype: yesnoradio
 ---
 id: Mass Civ Pro
@@ -779,6 +783,7 @@ fields:
     
   - 'Request a Preliminary Injunction (may be issued for longer than 10 days; notice to the other side is required)': request_pi
     datatype: yesno
+    default: ${ request_a_pi }
     
   - 'Issue a Short Order of Notice (a shortened notice period to the other side so the Court can hear this request)': issue_son
     datatype: yesno
