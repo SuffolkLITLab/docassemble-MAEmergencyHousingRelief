@@ -714,20 +714,12 @@ subquestion: |
   How would a Short Order of Notice benefit you?
   It allows you to get in front of a judge faster to ask them to:
 
-  % if violation_breach_contract:
-  * Stop your landlord from breaching your contract
-  % endif
   % if utilities_needed:
   * Stop your landlord from shutting off your utilities
   % endif
-  % if violation_bad_conditions:
-  * Order your landlord to make emergency repairs right away
-  % endif
+
   % if stop_eviction:
   * Stop your landlord from trying to evict you from your home
-  % endif
-  % if stop_return_belongings:
-  * Order your landlord to return your belongings
   % endif
   
 fields:
