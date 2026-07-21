@@ -1,0 +1,1034 @@
+include:
+  - docassemble.AssemblyLine:assembly_line.yml
+  - docassemble.ALMassachusetts:al_massachusetts.yml
+  - docassemble.MassAccess:massaccess.yml
+  - docassemble.ALAffidavitOfIndigency:affidavit_body.yml
+  - docassemble.MAHousingTRO:temporary_restraining_order.yml
+---
+metadata:
+  title: >-
+    Get Emergency Housing Relief
+  short title: >-
+    Get Emergency Housing Relief
+  description: |-
+    This interview helps someone in Massachusetts get emergency housing relief. 
+
+  when_you_are_finished: |
+  efiling_enabled: False
+  integrated_efiling: False
+  integrated_email_filing: False
+  requires_notarization: False
+  unlisted: False
+  landing_page_url: >-
+    https://courtformsonline.org/
+  maturity: production
+  estimated_completion_minutes: 10
+  estimated_completion_delta: 5
+  LIST_topics:
+    - "CO-00-00-00-00"
+  tags:
+    - "CO-00-00-00-00"
+  authors:
+  original_form: []
+  original_form_published_on: ""
+  allowed_courts: 
+    - "Housing Court"
+  typical_role: "plaintiff"
+  al_weaver_version: "2.1.0"
+  generated_on: "2026-06-25"
+  languages:
+    - en
+  jurisdiction: "NAM-US-US+MA"
+  review_date: 2026-06-25
+  form_titles:
+    - Verified complaint and request for emergency relief
+  form_numbers: []
+  update_notes: |
+---
+code: |
+  # This controls the default country and list of states in address field questions
+  AL_DEFAULT_COUNTRY = "US"
+---
+code: |
+  # This controls the default state in address field questions
+  AL_DEFAULT_STATE = "MA"
+---
+code: |
+  github_repo_name =  'docassemble-VerifiedComplaintAndRequestFor'
+---
+code: |
+  interview_short_title = 'Get Emergency Housing Relief'
+---
+code: |
+  al_form_type = "starts_case" 
+---
+objects:
+  - other_parties: ALPeopleList.using(ask_number=True,target_number=1)
+  - users: ALPeopleList.using(ask_number=True,target_number=1)
+---
+features:
+  navigation: True
+---
+code: |
+  enable_al_nav_sections = True
+  al_parties_nav_section = "people_in_the_case"
+---
+reconsider: True
+variable name: al_nav_sections
+data:
+  - getting_started: Get started
+  - immediate_danger: Are you in immediate danger?
+  - eligibility_screening: Eligibility
+  - case_informaiton: Case information
+  - court_selection: Court selection
+  - your_information: Your information
+  - landlord_information: Landlord information 
+  - review_answers: Review answers
+  - signature_and_submit: Sign and submit
+  - download_next_steps: Download & next step
+---
+comment: |
+  Controls order and branching logic for questions specific to this form
+id: interview_order_verified_complaint_and_request_for
+code: |
+  # Set the allowed courts for this interview
+  allowed_courts = ['Housing Court']
+  nav.set_section("getting_started")
+  temporary_restraining_order_intro
+  nav.set_section("immediate_danger")
+  in_danger
+  nav.set_section("eligibility_screening")
+  eviction_flow_complete
+  screening_finished
+  screening_2_finished
+  nav.set_section ("your_information")
+  
+  user_role = "plaintiff"
+  user_ask_role = "plaintiff"
+  plaintiffs.gather()
+  plaintiffs[0].phone_number
+  plaintiffs[0].address.address
+  plaintiffs[0].email
+  nav.set_section("landlord_information")
+  defendants.gather()
+  defendants[0].address.address
+  defendants[0].email
+  defendants[0].phone_number
+  
+  nav.set_section("court_information")
+  trial_court
+  docket_number
+  nav.set_section("case_information")
+  facts_description
+  utilities_needed
+  stop_fail_repairs
+  uptocode_referral_complete
+  
+  emergency_relief_timing_warning
+  issue_a_tro
+  issue_a_son
+  issue_tro
+  if issue_tro:
+      waiver_yes_no
+      plaintiff_request
+  indigency_q
+  if indigency_q:
+      set_fee_waiver_defaults
+      if not is_indigent:
+          doesnt_qualify_interstitial
+      case_name
+      affidavit_of_indigency_filing_court
+  
+  nav.set_section("review_answers")
+  verified_complaint_and_request_for_preview_question
+  nav.set_section("signature_and_submit")
+  basic_questions_signature_flow
+  nav.set_section("download_next_steps")
+  interview_order_verified_complaint_and_request_for = True
+  interview_order_temporary_restraining_order = True
+---
+comment: |
+  This block includes the logic for standalone interviews.
+mandatory: true  
+code: |
+  al_intro_screen
+  verified_complaint_and_request_for_intro
+  interview_order_verified_complaint_and_request_for
+  signature_date
+  # Store anonymous data for analytics / statistics
+  store_variables_snapshot(
+      persistent=True,
+      data={
+          "zip": showifdef("users[0].address.zip"),
+          "reached_interview_end": True,
+      },
+  )
+  verified_complaint_and_request_for_download
+  temporary_restraining_order_download
+---
+code: |
+  al_intro_screen
+  temporary_restraining_order_intro
+  interview_order_temporary_restraining_order
+  signature_date
+  # Store anonymous data for analytics / statistics
+  store_variables_snapshot(
+      persistent=True,
+      data={
+          "zip": showifdef("users[0].address.zip"),
+          "reached_interview_end": True,
+      },
+  )
+  temporary_restraining_order_download
+---
+code: |
+  # This is a placeholder for the addresses that will be searched
+  # for matching address to court. Edit if court venue is based on 
+  # a different address than the user's
+  [user.address.address for user in users.complete_elements()]
+  addresses_to_search = [user.address for user in users.complete_elements()]
+---
+code: |
+  btn_made = '<a href="https://gbls.org/MADE" target="_blank" class="btn btn-primary">MADE</a>'
+  btn_uptocode = '<a href="https://uptocode.org/" target="_blank" class="btn btn-info">UpToCode</a>'
+  btn_legal_services = '<a href="https://masslrf.org/en/home" target="_blank" class="btn btn-warning">Get Legal Advice</a>'
+  btn_public_housing = '<a href="https://www.mass.gov/how-to/report-hlc-program-concerns" target="_blank" class="btn btn-warning">Public Housing Help</a>'
+  btn_docket_number = '<a href="https://www.mass.gov/info-details/how-to-search-court-dockets?_gl=1*1t4lg0v*_ga*Mjc1NTYwNDQxLjE3NDE2MjkwMjA.*_" target="blank" class="btn btn-info">Find Your Docket Number</a>'
+---
+id: immediate danger resources
+question: | 
+  Are You In Danger Right Now?
+subquestion: |
+  #####Have you seen any of these warning signs?
+  * Sparks or the smell of smoke (fire risk)
+  * The smell of gas (gas leak)
+  * Large cracks in your ceiling or floors
+  
+fields: 
+  - no label: in_danger
+    datatype: yesnoradio
+  - note: |
+      **In case of an emergency, please contact 911.** 
+
+      If you are in immediate danger and need to find emergency housing, click this button to find emergency housing resources. 
+
+      <div class="d-flex gap-2">
+        <a href="https://www.mass.gov/orgs/emergency-housing-help-programs" class="btn btn-warning">Find Emergency Housing<a/a>
+      </div>
+    show if: in_danger
+---
+id: introduction to interview
+continue button field: temporary_restraining_order_intro
+question: |
+  What does this interview do?
+subquestion: |
+  This interview will help you file a complaint to get emergency housing relief and issue a temporary restraining order, along with a preliminary injunction and short order notice form.
+
+  ####Does this apply to you?
+  1. Are you face a {housing emergency}?
+  2. Did your landlord act without a {court order}?
+  
+  ####What to gather before you start
+  
+  * Your lease 
+  * Proof of income (if you decide to waive the security deposit)
+  * Your landlord's information such as their contact information and address
+  * The docket number (if you do not have one, you can still continue with the interview)<br>
+  [find your docket number](https://www.mass.gov/info-details/how-to-search-court-dockets?_gl=1*1t4lg0v*_ga*Mjc1NTYwNDQxLjE3NDE2MjkwMjA.*_)&nbsp;<sup>:up-right-from-square:&nbsp;(opens in new tab)</sup>
+   
+  If you do not have any of the above, you can still start the interview without them. Most people take about 15-20 minutes to complete this interview.
+
+  ####After you finish this interview
+  When you are finished, you will need to file this petition with the Court, either by eFile using a valid email address or in person with the Clerk's office.
+
+  #####Not the right form for you?
+  If you need help but this isn't an emergency situation, ${ btn_legal_services } may be able to assist.
+---
+objects:
+  - screening_1_warning: DADict
+  - screening_2_warning: DADict
+---
+id: first screening question - resident
+section: getting_started
+question: |
+  Do you live in Massachusetts?
+fields:
+  - no label: is_resident
+    datatype: yesnoradio
+---
+id: first screening question - age
+section: getting_started
+question: |
+  Are you over 18?
+fields:
+  - no label: over_18
+    datatype: yesnoradio
+---
+id: first screening question - tenant
+section: getting_started
+question: |
+  Do you rent your home from a landlord?
+fields:
+  - no label: is_tenant
+    datatype: yesnoradio
+---
+id: first screening logic
+comment: Asks the question first, then seeks a unique dictionary variable to force the shared warning screen to appear immediately.
+code: |
+  is_resident
+  if not is_resident:
+      screening_1_warning['resident']
+      
+  over_18
+  if not over_18:
+      screening_1_warning['age']
+      
+  is_tenant
+  if not is_tenant:
+      screening_1_warning['tenant']
+  
+  screening_finished = True
+---
+id: first eligibility warning
+question: |
+  Warning: You may not be eligible
+subquestion: |
+  Based on the requirements, you must meet all the criteria on the previous screens to be eligible for this specific legal relief. 
+
+  Here is why you may not be eligible based on your answers so far:
+  
+  % if defined('is_resident') and not is_resident:
+  * **Not a Massachusetts Resident:** This process is specifically for Massachusetts residents.
+  % endif
+  
+  % if defined('over_18') and not over_18:
+  * **Under 18:** You must be a legal adult (18 or older) to file these forms.
+  % endif
+  
+  % if defined('is_tenant') and not is_tenant:
+  * **Not a Tenant:** This process is designed for tenants renting from a landlord.
+  % endif
+  
+
+  Because you did not meet these requirements, the court may reject your filing. However, you are still allowed to proceed with this interview and generate your forms if you would like to continue.
+continue button field: screening_1_warning[i]
+---
+id: second screening question - 209a
+question: |
+  Is there a 209A stay-away order against you?
+fields:
+  - no label: has_209a_order
+    datatype: yesnoradio
+---
+id: second screening question - roommate
+question: |
+  Did a roommate ask the landlord to keep you out for their safety?
+fields:
+  - no label: roommate_requested_lockout
+    datatype: yesnoradio
+---
+id: second screening question - public housing
+question: |
+  Do you live in public or subsidized housing?
+fields:
+  - no label: is_public_housing_exclusion
+    datatype: yesnoradio
+---
+id: second screening logic
+code: |
+  has_209a_order
+  if has_209a_order:
+      screening_2_warning['209a']
+      
+  roommate_requested_lockout
+  if roommate_requested_lockout:
+      screening_2_warning['roommate']
+      
+  is_public_housing_exclusion
+  if is_public_housing_exclusion:
+      screening_2_warning['public']
+  
+  screening_2_finished = True
+---
+id: second eligibility warning
+question: |
+  Warning: This may not be the right process for you
+subquestion: |
+  Based on your answers, this interview may not fit your situation:
+  
+  % if defined('has_209a_order') and has_209a_order:
+  * **209A Order:** If there is a stay-away order against you, a lockout may actually be lawful. You should **talk to a lawyer first**. ${ btn_legal_services }
+  % endif
+  
+  % if defined('roommate_requested_lockout') and roommate_requested_lockout:
+  * **Co-tenant Safety:** If a roommate asked the landlord to keep you out for their safety, a lockout may be lawful. You should **talk to a lawyer first**. ${ btn_legal_services }
+  % endif
+  
+  % if defined('is_public_housing_exclusion') and is_public_housing_exclusion:
+  * **Public or Subsidized Housing Exclusion:** If you live in a public or subsidized development, that falls under a different form, not the forms this interview produces. You will need a **different process**. ${ btn_public_housing }
+  % endif
+
+  However, you are still allowed to proceed with this interview and generate your forms if you would like to continue.
+continue button field: screening_2_warning[i]
+---
+sets:
+  - other_parties[i].name.first
+  - other_parties[i].name.last
+  - other_parties[i].name.middle
+  - other_parties[i].name.suffix
+id: names of opposing parties
+question: |
+  Who is your landlord?
+fields:
+  - code: |
+      other_parties[i].name_fields(person_or_business="unsure")
+---
+id: active eviction case
+question: |
+  Is there an active eviction case against you?
+fields:
+  - no label: eviction_order
+    datatype: yesnoradio
+---
+id: active eviction order
+question: |
+  Is there an active eviction order against you?
+fields:
+  - no label: has_eviction_order
+    datatype: yesnoradio
+---
+id: eviction logic
+code: |
+  if eviction_order or has_eviction_order:
+      eviction_warning_seen
+      eviction_case_yes = True
+      eviction_case_no = False
+  else:
+      eviction_case_yes = False
+      eviction_case_no = True
+      
+  eviction_flow_complete = True
+---
+id: eviction warning screen
+question: |
+  Warning: Ongoing eviction case
+subquestion: |
+  If there is an active eviction case against you, and your landlord has a court order for eviction, use ${ btn_made } for the best chance to stop them. 
+
+   If all else fails or there is active eviction order against you seek professional legal advice: 
+  
+  ${ btn_legal_services }
+  
+  However, you are still allowed to proceed with this interview and generate your forms if you would like to continue.
+continue button field: eviction_warning_seen
+---
+terms: 
+  housing emergency: |
+    This could be your landlord changing the locks without telling you, your landlord refusing to make necessary repairs, your utilities were shut off, there is a safety or health risk in your home. 
+  court order: |
+    If you are currently in a court proceeding with your landlord, and the judge has ordered your landlord to do something against you such as eviction. 
+---
+id: your contact information
+section: people_in_the_case
+question: |
+  % if al_person_answering == "user":
+  What is your contact information?
+  % else:
+  What is ${ users[0] }'s contact information?
+  % endif
+subquestion: |
+  % if al_person_answering == "user":
+  Include at least **one** way to reach you other than by mail.
+  % else:
+  Include at least **one** way to reach ${ users[0] } other than by mail.
+  % endif
+
+  ${ collapse_template(why_contact_info_needed_template) }
+fields:  
+  - Phone number: users[0].phone_number
+    required: False
+    datatype: al_international_phone
+  - Email address: users[0].email    
+    datatype: email
+    required: False
+  - label: |
+      % if al_person_answering == "user":
+      Other ways to reach you
+      % else:
+      Other ways to reach ${ users[0] }
+      % endif
+    field: users[0].other_contact_method
+    input type: area
+    required: False
+    help: |
+      If you do not have a phone number or email, provide
+      specific contact instructions. For example, use a friend's phone number.
+      But the friend must be someone you can rely on to give you a
+      message.
+validation code: |
+  if (
+    not showifdef("users[0].phone_number")
+    and (not showifdef("users[0].mobile_number"))
+    and (not showifdef("users[0].email"))
+    and (not showifdef("users[0].other_contact_method"))
+  ):
+    validation_error(
+      word("You need to provide at least one contact method."),
+      field="users[0].other_contact_method",
+    )
+---
+id: docket number
+question: |
+  What is the docket number for your case?
+fields:
+  - I don't know the docket number: dont_know_docket_number
+    datatype: yesno    
+  - Docket number: docket_number
+    hide if: dont_know_docket_number  
+validation code: |
+  # This should be safe to 
+  if dont_know_docket_number:
+    docket_number = '' 
+---
+id: Tell Us About the Case
+section: case_details
+question: |
+  What happened between you and your landlord
+subquestion: |
+  Briefly describe the facts, date, and time of events (if any) that have occurred
+fields:
+  - "Description of events and facts": facts_description
+    input type: area
+---
+id: Landlord Violations
+question: |
+  Which of the following violations has your landlord done?
+subquestion: |
+  This form allows you to ask for emergency help for something your landlord did
+  or failed to do.
+fields:
+  - 'My landlord breached our contract': violation_breach_contract
+    datatype: yesno
+    help: |
+      Your landlord breaks the lease if they do not follow its terms. For example, say your lease allows you to have a dog. If your landlord later says no pets are allowed and tries to evict you, that is a breach of contract.
+  - 'My utilities were interefered with': utilities_needed
+    datatype: yesno
+  - 'There are bad conditions in my home': violation_bad_conditions
+    datatype: yesno
+    help: |
+      You can include anything here that is a breach of your to "implied warranty of habitability" of your home. It is an unwritten, unbreakable guarantee that your landlord must provide a home that is safe, decent, sanitary, and meets the minimum standards of the State Sanitary Code. It applies the moment you move in, whether you have a lease or not
+  - 'Other (breach of my quiet enjoyment)': other_issues
+    datatype: yesno
+  - 'Describe the other thing your landlord did wrong': other_issues_type
+    datatype: text
+    show if: other_issues
+    help: |
+      You can include anything here that is a breach of your right to
+      "quiet enjoyment" of your home. For example: an unsafe living condition;
+      an odor or noise that makes your home unlivable; or anything that 
+      makes you unable to use your home safely and peacefully.
+validation code: |
+  if not violation_breach_contract and not utilities_needed and not violation_bad_conditions and not other_issues:
+    validation_error("You must select at least one incident.")
+help: |
+  #### What is a breach of quiet enjoyment?
+  A breach of quiet enjoyment is something that your landlord did or should
+  have done that makes your home unlivable. This can cover a lot of different
+  issues. The problem needs to be serious and you can get help for issues
+  that the court agrees are emergencies with this form.
+  
+  Examples might include:
+  
+  * A sewage backup in your basement
+  * A strong unpleasant odor
+  * Constant noise at unreasonable times of day (remember, even if you are
+  working from home, permitted construction may still be allowed)
+  * Unsafe living conditions that your landlord isn't fixing
+  
+  [Read more](https://www.masslegalhelp.org/housing/lt1-chapter-8-rights-decent-place-live)
+---
+id: Court Request
+question: |
+  What are you asking the court to do?
+subquestion: |
+  You told us about the following problems:
+
+  % if violation_breach_contract:
+  * Your landlord breached your lease agreement
+  % endif
+  % if utilities_needed:
+  * Your landlord shut off your utilities or did not pay for utilities they 
+  are required to pay
+  % endif
+  % if violation_bad_conditions:
+  * Your landlord breached your implied warranty of habitability by not making necessary repairs
+  % endif
+  
+  We have already checked the boxes that make sense based on your earlier
+  answers, but you should review and make any changes as needed.
+
+  Check the boxes that apply below.
+fields:
+  - 'Stop trying to evict me from my home': stop_eviction
+    datatype: yesno
+  - 'Provide me utilities': utilities_needed
+    datatype: yesno
+    default: ${ utilities_needed }
+  - 'What utilities do you need back?': utilities_needed_type
+    datatype: text
+    show if: utilities_needed
+  - 'Make repairs to my home': stop_fail_repairs
+    datatype: yesno
+    default: ${ violation_bad_conditions }
+  - 'Return my belongings': stop_return_belongings
+    datatype: yesno
+  - 'Other request for the court': other_court_request
+    datatype: yesno
+  - 'What do you want the court to do?': other_court_request_type
+    datatype: text
+    show if: other_court_request
+    
+validation code: |
+  if not showifdef('utilities_needed') and not showifdef('stop_eviction') and not showifdef('stop_fail_repairs') and not showifdef('stop_return_belongings') and not showifdef('other_court_request'):
+      validation_error("You must ask the court to do at least one thing.")
+---
+id: uptocode referral logic
+code: |
+  if violation_bad_conditions or stop_fail_repairs:
+      uptocode_warning_seen
+  uptocode_referral_complete = True
+---
+id: uptocode referral warning
+continue button field: uptocode_warning_seen
+continue button label: Continue
+question: |
+  Warning: UpToCode may be a better fit for repairs
+subquestion: |
+  You told us your landlord has not fixed bad conditions in your home.
+
+  There is a free website that can help you with repairs, and it is called
+  **UpToCode**. It is built for tenants in Massachusetts, and it is free.
+
+  #### What UpToCode can do for you
+
+  * Make a list of the problems: you go through your home room by room
+  and write down everything that is wrong. You can also add photos and the
+  date that each problem started.
+  
+  * Show you the law: a law called the State Sanitary Code says what
+  your landlord has to fix. UpToCode explains that law in plain words, so
+  you do not have to read the legal text yourself.
+  
+  * Write to your landlord: you answer some questions, and UpToCode
+  writes the whole letter for you.
+  
+  * Ask the city for an inspection: a city inspector can visit your
+  home and order your landlord to fix the problems.
+  
+  * Go to court: UpToCode can help you ask a judge to order repairs.
+  It can also help you ask your landlord to pay you money.
+
+  You decide which of these you want to do, and you do not have to do all
+  of them. Most tenants finish in 20 minutes to 1 hour, and UpToCode is
+  available in English and Spanish.
+
+  ${ btn_uptocode }
+
+  #### Which one should you use?
+
+  Use this form if you have an emergency and you need a judge to act in
+  the next few days. For example, your landlord locked you out, or shut off
+  your heat, water, or electricity.
+
+  Use **UpToCode** if the main thing you want is repairs. It is also the
+  better choice if you have not told your landlord about the problem in
+  writing yet. A judge will want evidence that your landlord knew about the
+  problem and decided not to fix it. UpToCode helps you build that evidence.
+
+  You can use both, and starting UpToCode today does not stop you from
+  coming back to this form later.
+
+  You may continue with this form if you wish.
+---
+id: emergency relief timing warning
+continue button field: emergency_relief_timing_warning
+continue button label: I understand
+question: |
+  Before you ask the court for emergency help
+subquestion: |
+ You can only ask for a **Temporary Restraining Order** or a **Short Order
+  of Notice** at the same time you file your complaint. They are part of
+  starting your case. You cannot add them to a case later.
+
+  A **Preliminary Injunction** is different. You can ask for one when you
+  file your complaint, or later on while your case is still open.
+---
+id: issue a tro
+question: |
+  It sounds like you may need a Temporary Restraining Order
+subquestion: |
+  Based on what you have told us, it sounds like you may benefit from a Temporary Restraining Order. 
+  
+  #####What is a Temporary Restraining Order (TRO)?
+  A TRO is an emergency court order. It tells your landlord to stop doing something illegal or to fix a dangerous problem in your home right away. 
+
+  **How long does a TRO last?**
+  A TRO works fast, but it is only good for about 10 days. 
+  
+  After that, you and your landlord will go to a full court hearing where a judge will decide what happens next. 
+
+  **How would a TRO benefit you?**
+
+  % if violation_breach_contract:
+  * Stop your landlord from breaching your contract
+  % endif
+  % if utilities_needed:
+  * Stop your landlord from shutting off your utilities
+  % endif
+  % if violation_bad_conditions:
+  * Order your landlord to make emergency repairs right away
+  % endif
+  % if stop_eviction:
+  * Stop your landlord from trying to evict you from your home
+  % endif
+  % if stop_return_belongings:
+  * Order your landlord to return your belongings
+  % endif
+  
+fields:
+  - 'Do you want a Temporary Restraining Order?': issue_a_tro
+    datatype: yesnoradio
+---
+id: issue a short order of notice
+question: |
+  It sounds like you may need a Short Order of Notice
+subquestion: |
+  Based on what you have told us, it sounds like you may benefit from a Short Order of Notice. 
+  
+  #####What is a Short Order of Notice?
+  A Short Order of Notice is a procedural tool used to bypass standard court timelines when a matter is urgent. Typically, courts require you to give a landlord a specific amount of advance notice before a hearing.
+
+  Why is this important?
+  If you are facing an emergency, you cannot wait the standard amount of time. This asks the court to shrink that waiting period, allowing the judge to hear your emergency request much sooner.
+
+  How would a Short Order of Notice benefit you?
+  It allows you to get in front of a judge faster to ask them to:
+
+  % if violation_breach_contract:
+  * Stop your landlord from breaching your contract
+  % endif
+  % if utilities_needed:
+  * Stop your landlord from shutting off your utilities
+  % endif
+  % if violation_bad_conditions:
+  * Order your landlord to make emergency repairs right away
+  % endif
+  % if stop_eviction:
+  * Stop your landlord from trying to evict you from your home
+  % endif
+  % if stop_return_belongings:
+  * Order your landlord to return your belongings
+  % endif
+  
+fields:
+  - 'Do you want to request a Short Order of Notice?': issue_a_son
+    datatype: yesnoradio
+---
+id: Mass Civ Pro
+mandatory: false
+question: |
+  Which of the following options (if any) would you like to ask the court to do?
+subquestion: |
+  We have already checked the boxes that make sense based on your earlier
+  answers, but you should review and make any changes as needed.
+  
+fields:
+  - 'Issue a Temporary Restraining Order (valid for 10 days only; may be requested without immediate notice to the other side)': issue_tro
+    datatype: yesno
+    default: ${ issue_a_tro }
+    
+  - 'Request a Preliminary Injunction (may be issued for longer than 10 days; notice to the other side is required)': request_pi
+    datatype: yesno
+    
+  - 'Issue a Short Order of Notice (a shortened notice period to the other side so the Court can hear this request)': issue_son
+    datatype: yesno
+    default: ${ issue_a_son }
+
+help: |
+  **Temporary Restraining Order (TRO)** <br>
+  A Temporary Restraining Order acts as an emergency "pause button" issued by a judge. In a housing context, you might request this if a landlord attempts an illegal eviction before a legal eviction process is complete. Because this is an emergency, the judge may grant it "ex parte," meaning they make the decision based on your request alone before the landlord has been notified or given the chance to appear in court. It is designed to preserve your safety and housing stability for up to 10 days until a formal hearing can take place.
+
+  **Preliminary Injunction** <br>
+  A Preliminary Injunction is a court order that lasts longer than a TRO and is used to maintain the current situation while your full case is being heard. In an eviction case, if you have a strong legal defense—such as proving that the eviction notice you received was invalid—a judge might grant this to allow you to remain in your home while the court takes the time to fully review the merits of your dispute. Unlike the TRO, this process requires that you provide formal notice to the landlord, ensuring they have the opportunity to show up, argue their side, and present evidence before the judge makes a decision.
+
+  **Short Order of Notice** <br>
+  A Short Order of Notice is a procedural tool used to bypass standard court timelines when a matter is urgent. Typically, courts require you to give a landlord a specific amount of advance notice before a hearing, but if you are facing immediate homelessness, you cannot wait that long. By requesting a Short Order of Notice, you are asking the court to shrink that waiting period, allowing the judge to hear your emergency request for protection much sooner than the standard schedule would allow.
+---
+id: Your Request
+question: |
+  Your Request
+mandatory: false
+subquestion: |
+  You told us about the following problems:
+
+  % if violation_breach_contract:
+  * Your landlord breached your lease agreement
+  % endif
+  % if utilities_needed:
+  * Your landlord shut off your utilities or did not pay for utilities they 
+  are required to pay
+  % endif
+  % if violation_bad_conditions:
+  * Your landlord breached your implied warranty of habitability by not making necessary repairs
+  % endif  
+
+fields: 
+ - "**Based on these problems, please describe exactly what you want the court to order your landlord to do or stop doing.**": plaintiff_request
+   datatype: area
+---
+code: |
+  court_costs_amount = 135
+---
+code: |
+  fees['Entry fee'].waive = True
+  fees['Entry fee'].amount = court_costs_amount
+  set_fee_waiver_defaults = True
+---
+code: |
+  fees['Filing fee'].waive = True
+  fees['Filing fee'].amount = court_costs_amount
+  fees['Service'].waive = True
+  fees['Service'].amount = 40
+  set_fee_waiver_defaults = True
+---
+code: |
+  affidavitofindigency_attachment.enabled = indigency_q and is_indigent
+---
+id: Fee Waiver
+question: |
+  Would you like to file an affidavit of indigency
+fields:
+  - no label: indigency_q
+    datatype: yesnoradio
+auto terms:
+  Affidavit of Indigency: |
+   A fee waiver for all the fees and costs required to start a case and continue it such filing fees, court fees, and service costs.
+---
+id: preview verified_complaint_and_request_for
+section: review_answers
+question: |
+  Preview your form before you sign it
+subquestion: |
+  Here is a preview of the form you will sign on the next page.   
+  
+  **Verified Complaint:**<br>
+  ${ verified_complaint_and_request_for_attachment.as_pdf(key='preview') }<br>
+  ${ action_button_html(url_action('review_verified_complaint_and_request_for'), label='Edit answers', color='info') }<br>
+  
+  % if issue_tro:
+  **Temporary Restraining Order:**<br>
+  ${ temporary_restraining_order_attachment.as_pdf(key='preview') }<br>
+  ${ action_button_html(url_action('review_temporary_restraining_order'), label='Edit answers', color='info') }
+  % endif
+
+  % if indigency_q and is_indigent:
+  **Affidavit of Indigency:**<br>
+  ${ affidavitofindigency_attachment.as_pdf(key='preview') }<br>
+  % endif
+ 
+  Click the images to open them in a new tab. Click the "Edit answers" button
+  to edit your answers.
+  
+  Remember to come back to this window to continue and sign your form.
+continue button field: verified_complaint_and_request_for_preview_question    
+---
+id: verified complaint and request for review screen
+event: review_verified_complaint_and_request_for
+question: |
+  Review your answers
+review:
+  - Edit: plaintiffs.revisit
+    button: |
+      **Plaintiffs**
+
+      % for item in plaintiffs:
+        * ${ item }
+      % endfor
+  - Edit: defendants.revisit
+    button: |
+      **Defendants**
+
+      % for item in defendants:
+        * ${ item }
+      % endfor
+  - Edit: trial_court
+    button: |
+      **Trial court**
+  
+      % if defined("trial_court.name.first"):
+      * name: ${ trial_court.name_full() }
+      % endif
+  - Edit: utilities_needed_type
+    button: |
+      **Type of needed utility or service**:
+      ${ utilities_needed_type }
+  - Edit: other_court_request_type
+    button: |
+      **Type of other request to court**:
+      ${ other_court_request_type }
+  - Edit: other_issues_type
+    button: |
+      **Type of other issue**:
+      ${ other_issues_type }
+  - Edit: signature_date
+    button: |
+      **Date of Signature**:
+      ${ signature_date }
+  - Edit: docket_number
+    button: |
+      **Docket number**:
+      ${ docket_number }
+  - Edit: facts_description
+    button: |
+      **Description of events and facts**:
+      > ${ single_paragraph(facts_description) }
+---
+code: |
+  signature_fields = ['users[0].signature']
+---
+id: edit plaintiffs
+continue button field: plaintiffs.revisit
+question: |
+  Edit plaintiffs
+subquestion: |
+  ${ plaintiffs.table }
+
+  ${ plaintiffs.add_action() }
+---
+table: plaintiffs.table
+rows: plaintiffs
+columns:
+  - Address: |
+      row_item.address.block() if defined("row_item.address.address") else ""
+  - Name: |
+      row_item.name_full() if defined("row_item.name.first") else ""
+  - Phone number: |
+      row_item.phone_number if defined("row_item.phone_number") else ""
+  - Signature: |
+      row_item.signature if defined("row_item.signature") else ""
+  - Email: |
+      row_item.email if defined("row_item.email") else ""
+edit:
+  - address.address
+  - name.first
+  - phone_number
+  - signature
+  - email
+confirm: True
+---
+id: edit defendants
+continue button field: defendants.revisit
+question: |
+  Edit defendants
+subquestion: |
+  ${ defendants.table }
+
+  ${ defendants.add_action() }
+---
+table: defendants.table
+rows: defendants
+columns:
+  - Name: |
+      row_item.name_full() if defined("row_item.name.first") else ""
+  - Phone number: |
+      row_item.phone_number if defined("row_item.phone_number") else ""
+  - Address: |
+      row_item.address.block() if defined("row_item.address.address") else ""
+  - Email: |
+      row_item.email if defined("row_item.email") else ""
+edit:
+  - name.first
+  - phone_number
+  - address.address
+  - email
+confirm: True
+---
+id: download verified_complaint_and_request_for
+event: verified_complaint_and_request_for_download
+question: |
+  All done
+subquestion: |
+  Thank you ${users}. Your form is ready to download and deliver.
+  
+  View, download and send your form below. Click the "Edit answers" button to fix any mistakes.
+
+  ${ action_button_html(url_action('review_verified_complaint_and_request_for'), label='Edit answers', color='info') }
+  
+  
+  ${ al_user_bundle.download_list_html() }
+  
+
+  ${ al_user_bundle.send_button_html(show_editable_checkbox=True) }
+---
+id: download temporary_restraining_order
+event: temporary_restraining_order_download
+question: |
+  All done
+subquestion: |
+  Thank you ${users}. Your form is ready to download and deliver.
+  
+  View, download and send your form below. Click the "Edit answers" button to fix any mistakes.
+
+  ${ action_button_html(url_action('review_temporary_restraining_order'), label='Edit answers', color='info') }
+  
+  
+  ${ al_user_bundle.download_list_html() }
+
+  ${ al_user_bundle.send_button_html(show_editable_checkbox=True) }
+
+progress: 100
+---
+objects:
+  # 1. Define the Verified Complaint Documents
+  - verified_complaint_and_request_for_Post_interview_instructions: ALDocument.using(title="Instructions", filename="verified_complaint_and_request_for_next_steps.docx", enabled=True, has_addendum=False)
+  - verified_complaint_and_request_for_attachment: ALDocument.using(title="Verified complaint and request for emergency relief", filename="verified_complaint_and_request_for", enabled=True, has_addendum=False)
+  
+  # 2. Define the Temporary Restraining Order Documents
+  - temporary_restraining_order_Post_interview_instructions: ALDocument.using(title="Instructions", filename="temporary_restraining_order_next_steps.docx", enabled=issue_tro, has_addendum=False)
+  - temporary_restraining_order_attachment: ALDocument.using(title="Temporary Restraining Order", filename="temporary_restraining_order", enabled=issue_tro, has_addendum=False)
+
+  # 3. Create the Consolidated 0Bundles
+  - al_user_bundle: ALDocumentBundle.using(elements=[verified_complaint_and_request_for_Post_interview_instructions, verified_complaint_and_request_for_attachment, temporary_restraining_order_Post_interview_instructions, temporary_restraining_order_attachment], filename="emergency_relief_and_tro_user_bundle", title="All forms to download for your records", enabled=True)
+  - al_court_bundle: ALDocumentBundle.using(elements=[verified_complaint_and_request_for_attachment, temporary_restraining_order_attachment], filename="emergency_relief_and_tro_court_bundle", title="All forms to deliver to court", enabled=True)
+---
+attachment:
+  name: Post-interview-Instructions
+  filename: verified_complaint_and_request_for_next_steps
+  docx template file: verified_complaint_and_request_for_next_steps.docx
+  variable name: verified_complaint_and_request_for_Post_interview_instructions[i]
+  skip undefined: True
+  tagged pdf: True
+---
+attachment:
+  name: verified complaint and request for
+  filename: verified_complaint_and_request_for
+  variable name: verified_complaint_and_request_for_attachment[i]
+  skip undefined: True
+  docx template file: verified_complaint_and_request_for.docx
+  tagged pdf: True
+---
+attachment:
+  name: Post-interview-Instructions
+  filename: temporary_restraining_order_next_steps
+  docx template file: docassemble.MAHousingTRO:temporary_restraining_order_next_steps.docx
+  variable name: temporary_restraining_order_Post_interview_instructions[i]
+  skip undefined: True
+  tagged pdf: True
+---
+attachment:
+  name: temporary restraining order
+  filename: temporary_restraining_order
+  variable name: temporary_restraining_order_attachment[i]
+  skip undefined: True
+  docx template file: docassemble.MAHousingTRO:temporary_restraining_order.docx
+  tagged pdf: True
