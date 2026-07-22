@@ -84,6 +84,8 @@ data:
   - court_selection: Court selection
   - case_information: Case information
   - emergency_relief: Request emergency relief
+  - affidavit_of_indigency: Affidavit of indigency
+    hidden: ${ showifdef("indigency_q") != True }
   - review_answers: Review answers
   - signature_and_submit: Sign and submit
   - download_next_steps: Download & next step
@@ -96,11 +98,11 @@ code: |
   allowed_courts = ['Housing Court']
   nav.set_section("getting_started")
   temporary_restraining_order_intro
+  screening_finished
   nav.set_section("immediate_danger")
   in_danger
   nav.set_section("eligibility_screening")
   eviction_flow_complete
-  screening_finished
   screening_2_finished
   
   nav.set_section ("your_information")
@@ -148,6 +150,7 @@ code: |
   if issue_tro:
       waiver_yes_no
       plaintiff_request
+  nav.set_section("affidavit_of_indigency")
   indigency_q
   if indigency_q:
       set_fee_waiver_defaults
@@ -446,7 +449,7 @@ terms:
     If you are currently in a court proceeding with your landlord, and the judge has ordered your landlord to do something against you such as eviction. 
 ---
 id: your contact information
-section: people_in_the_case
+section: your_information
 question: |
   % if al_person_answering == "user":
   What is your contact information?
@@ -508,7 +511,7 @@ validation code: |
     docket_number = '' 
 ---
 id: Tell Us About the Case
-section: case_details
+section: case_information
 question: |
   What happened between you and your landlord
 subquestion: |
