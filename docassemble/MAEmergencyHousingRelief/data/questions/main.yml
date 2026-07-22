@@ -835,13 +835,13 @@ fields:
 
 help: |
   **Temporary Restraining Order (TRO)** <br>
-  A Temporary Restraining Order acts as an emergency "pause button" issued by a judge. In a housing context, you might request this if a landlord attempts an illegal eviction before a legal eviction process is complete. Because this is an emergency, the judge may grant it "ex parte," meaning they make the decision based on your request alone before the landlord has been notified or given the chance to appear in court. It is designed to preserve your safety and housing stability for up to 10 days until a formal hearing can take place.
+  A TRO is like an emergency "pause button" from a judge. In a housing case, you might ask for this if your landlord tries to illegally evict you before the legal process is finished. A TRO protects your safety and housing for up to 10 days, until a full hearing can happen.
 
   **Preliminary Injunction** <br>
-  A Preliminary Injunction is a court order that lasts longer than a TRO and is used to maintain the current situation while your full case is being heard. In an eviction case, if you have a strong legal defense—such as proving that the eviction notice you received was invalid—a judge might grant this to allow you to remain in your home while the court takes the time to fully review the merits of your dispute. Unlike the TRO, this process requires that you provide formal notice to the landlord, ensuring they have the opportunity to show up, argue their side, and present evidence before the judge makes a decision.
+  A Preliminary Injunction is a court order that lasts longer than a TRO. It keeps things as they are while the court reviews your full case. Unlike a TRO, you must formally notify your landlord first. This gives them a chance to respond and share their side before the judge decides.
 
   **Short Order of Notice** <br>
-  A Short Order of Notice is a procedural tool used to bypass standard court timelines when a matter is urgent. Typically, courts require you to give a landlord a specific amount of advance notice before a hearing, but if you are facing immediate homelessness, you cannot wait that long. By requesting a Short Order of Notice, you are asking the court to shrink that waiting period, allowing the judge to hear your emergency request for protection much sooner than the standard schedule would allow.
+  A Short Order of Notice speeds up the court process when you can't wait. Normally, you must give your landlord advance notice before a hearing. But if you're facing homelessness right away, that wait could be too long. A Short Order of Notice asks the judge to shorten that wait, so your case can be heard much sooner.
 ---
 id: Your Request
 question: |
@@ -861,8 +861,10 @@ subquestion: |
   * Your landlord breached your implied warranty of habitability by not making necessary repairs
   % endif  
 
+  **Based on what you told us, tell the court exactly what you want your landlord to do or stop doing.**
+
 fields: 
- - "**Based on these problems, please describe exactly what you want the court to order your landlord to do or stop doing.**": plaintiff_request
+ - no label: plaintiff_request
    datatype: area
 ---
 code: |
