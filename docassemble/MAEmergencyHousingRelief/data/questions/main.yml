@@ -127,9 +127,23 @@ code: |
 
   nav.set_section("emergency_relief")
   emergency_relief_timing_warning
-  issue_a_tro
-  issue_a_son
-  request_a_pi
+  emergency_today
+  emergency_danger_warning
+  emergency_soon_hearing
+  emergency_ongoing_protection
+  if emergency_today or emergency_danger_warning:
+      issue_a_tro
+  else:
+      issue_a_tro = False
+  if emergency_soon_hearing:
+      issue_a_son
+  else:
+      issue_a_son = False
+  if emergency_ongoing_protection:
+      request_a_pi
+  else:
+      request_a_pi = False
+  
   issue_tro
   if issue_tro:
       waiver_yes_no
@@ -666,37 +680,75 @@ subquestion: |
   A **Preliminary Injunction** is different. You can ask for one when you
   file your complaint, or later on while your case is still open.
 ---
+id: assessment active emergency
+question: |
+  Will you suffer severe harm if the judge does not step in today?
+subquestion: |
+  You already told us about the problems you are having with your landlord. Now we need to know how fast the court must act. 
+
+  **Choose Yes if:**
+  Your situation is an extreme crisis, and waiting even 24 to 48 hours would cause severe harm to your health, safety, or property.
+fields:
+  - no label: emergency_today
+    datatype: yesnoradio
+---
+id: assessment danger warning
+question: |
+  Would warning your landlord about this court case put you or your property in immediate danger?
+subquestion: |
+  Usually, the court requires you to tell your landlord before a judge makes a decision. 
+
+  #### **Choose Yes if:**
+  * You believe your landlord will destroy your belongings if they find out you are going to court.
+  * You believe your landlord will immediately lock you out if warned.
+  * You have a reasonable fear for your physical safety if the landlord is notified beforehand.
+fields:
+  - no label: emergency_danger_warning
+    datatype: yesnoradio
+---
+id: assessment fast hearing
+question: |
+  Do you need a judge to hear your case in the next few days?
+subquestion: |
+  Normally, court hearings take several weeks to schedule. 
+
+  **Choose Yes if:**
+  Your living situation is unsafe or highly unstable, and you can wait 2 or 3 days, but you cannot wait weeks for a standard court date.
+fields:
+  - no label: emergency_soon_hearing
+    datatype: yesnoradio
+---
+id: assessment ongoing protection
+question: |
+  Do you need a court order that protects you for the next few months?
+subquestion: |
+  Some emergency court orders only last for 10 days. 
+
+  #### **Choose Yes if:**
+  * You need an ongoing rule that lasts until your entire lawsuit is completely finished. 
+  * *Example:* An order pausing an eviction, or an order forcing your landlord to keep the utilities on while the judge reviews your full case over the coming months.
+fields:
+  - no label: emergency_ongoing_protection
+    datatype: yesnoradio
+---
 id: issue a tro
 question: |
   It sounds like you may need a Temporary Restraining Order
 subquestion: |
   Based on what you have told us, it sounds like you may benefit from a Temporary Restraining Order. 
   
-  #####What is a Temporary Restraining Order (TRO)?
-  A TRO is an emergency court order. It tells your landlord to stop doing something illegal or to fix a dangerous problem in your home right away. 
+  ##### What is a Temporary Restraining Order (TRO)?
+  An emergency court order telling your landlord to stop doing something illegal or to fix a dangerous problem in your home right away. 
 
   **How long does a TRO last?**
-  A TRO works fast, but it is only good for about 10 days. 
-  
-  After that, you and your landlord will go to a full court hearing where a judge will decide what happens next. 
+  A TRO works fast, but it is only good for about 10 days. After that, you and your landlord will go to a full court hearing where a judge will decide what happens next. 
 
-  **How would a TRO benefit you?**
-
-  % if violation_breach_contract:
+  #### **How would a TRO benefit you?**
   * Stop your landlord from breaching your contract
-  % endif
-  % if utilities_needed:
   * Stop your landlord from shutting off your utilities
-  % endif
-  % if violation_bad_conditions:
   * Order your landlord to make emergency repairs right away
-  % endif
-  % if stop_eviction:
   * Stop your landlord from trying to evict you from your home
-  % endif
-  % if stop_return_belongings:
   * Order your landlord to return your belongings
-  % endif
   
 fields:
   - 'Do you want a Temporary Restraining Order?': issue_a_tro
@@ -717,13 +769,8 @@ subquestion: |
   **How would a Short Order of Notice benefit you?**
   It allows you to get in front of a judge faster to ask them to:
 
-  % if utilities_needed:
   * Stop your landlord from shutting off your utilities
-  % endif
-
-  % if stop_eviction:
   * Stop your landlord from trying to evict you from your home
-  % endif
   
 fields:
   - 'Do you want to request a Short Order of Notice?': issue_a_son
@@ -756,17 +803,10 @@ subquestion: |
   **How would a Preliminary Injunction benefit you?**
   The order can protect you right away without having to wait for a full trial. 
   
-  For example it could:
-
-  % if utilities_needed:
+  #### For example it could:
   * Stop your landlord from shutting off your utilities
-  % endif
-  % if violation_bad_conditions:
-  * Order your landlord to make emergency repairs 
-  % endif
-  % if stop_eviction:
+  * Order your landlord to make emergency repairs
   * Stop your landlord from trying to evict you from your home
-  % endif
   
 fields:
   - 'Do you want to request a Preliminary Injunction?': request_a_pi
