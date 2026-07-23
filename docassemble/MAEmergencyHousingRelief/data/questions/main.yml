@@ -1074,16 +1074,16 @@ progress: 100
 ---
 objects:
   # 1. Define the Verified Complaint Documents
-  - verified_complaint_and_request_for_Post_interview_instructions: ALDocument.using(title="Instructions", filename="verified_complaint_and_request_for_next_steps.docx", enabled=True, has_addendum=False)
+  - verified_complaint_and_request_for_Post_interview_instructions: ALDocument.using(title="Next Steps", filename="verified_complaint_and_request_for_next_steps.docx", enabled=True, has_addendum=False)
   - verified_complaint_and_request_for_attachment: ALDocument.using(title="Verified complaint and request for emergency relief", filename="verified_complaint_and_request_for", enabled=True, has_addendum=False)
   
   # 2. Define the Temporary Restraining Order Documents
-  - temporary_restraining_order_Post_interview_instructions: ALDocument.using(title="Instructions", filename="temporary_restraining_order_next_steps.docx", enabled=issue_tro, has_addendum=False)
+  - temporary_restraining_order_Post_interview_instructions: ALDocument.using(title="TRO Next Steps", filename="temporary_restraining_order_next_steps.docx", enabled=issue_tro, has_addendum=False)
   - temporary_restraining_order_attachment: ALDocument.using(title="Temporary Restraining Order", filename="temporary_restraining_order", enabled=issue_tro, has_addendum=False)
 
   # 3. Create the Consolidated 0Bundles
-  - al_user_bundle: ALDocumentBundle.using(elements=[verified_complaint_and_request_for_Post_interview_instructions, verified_complaint_and_request_for_attachment, temporary_restraining_order_Post_interview_instructions, temporary_restraining_order_attachment], filename="emergency_relief_and_tro_user_bundle", title="All forms to download for your records", enabled=True)
-  - al_court_bundle: ALDocumentBundle.using(elements=[verified_complaint_and_request_for_attachment, temporary_restraining_order_attachment], filename="emergency_relief_and_tro_court_bundle", title="All forms to deliver to court", enabled=True)
+  - al_user_bundle: ALDocumentBundle.using(elements=[verified_complaint_and_request_for_Post_interview_instructions, verified_complaint_and_request_for_attachment, temporary_restraining_order_Post_interview_instructions, temporary_restraining_order_attachment, affidavitofindigency_attachment], filename="emergency_relief_and_tro_user_bundle", title="All forms to download for your records", enabled=True)
+  - al_court_bundle: ALDocumentBundle.using(elements=[verified_complaint_and_request_for_attachment, temporary_restraining_order_attachment, affidavitofindigency_attachment], filename="emergency_relief_and_tro_court_bundle", title="All forms to deliver to court", enabled=True)
 ---
 attachment:
   name: Post-interview-Instructions
