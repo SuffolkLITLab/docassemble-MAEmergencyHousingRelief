@@ -219,9 +219,17 @@ code: |
 code: |
   btn_made = '<a href="https://gbls.org/MADE" target="_blank" class="btn btn-primary">MADE</a>'
   btn_uptocode = '<a href="https://uptocode.org/" target="_blank" class="btn btn-info">UpToCode</a>'
-  btn_legal_services = '<a href="https://www.mass.gov/info-details/finding-a-lawyer" target="_blank" class="btn btn-warning">Find a Lawyer</a>'
+  btn_legal_services = '<a href="https://www.mass.gov/info-details/finding-a-lawyer" target="_blank" class="btn btn-info">Find a Lawyer</a>'
   btn_public_housing = '<a href="https://www.mass.gov/how-to/report-hlc-program-concerns" target="_blank" class="btn btn-warning">Public Housing Help</a>'
   btn_docket_number = '<a href="https://www.mass.gov/info-details/how-to-search-court-dockets?_gl=1*1t4lg0v*_ga*Mjc1NTYwNDQxLjE3NDE2MjkwMjA.*_" target="blank" class="btn btn-info">Find Your Docket Number</a>'
+---
+terms: 
+  housing emergency: |
+   You cannot enter the apartment, your utilities were shut off, the apartment has become unsafe or unsanitary to live in.
+  court order: |
+    An offical order from a judge.
+  immediate danger: |
+    If you see smoke, smell gas, or notice large cracks in the cieling or floors. 
 ---
 id: introduction to interview
 continue button field: temporary_restraining_order_intro
@@ -230,37 +238,39 @@ question: |
 subquestion: |
   This interview will help you file a complaint to get emergency housing relief and issue a temporary restraining order, along with a preliminary injunction and short order notice form.
 
-  ####Does this apply to you?
-  1. Are you facing a {housing emergency}?
-  2. Did your landlord act without a {court order}?
-  
-  ####What to gather before you start
-  
-  * Your lease 
-  * Proof of income (if you decide to waive the security deposit)
-  * Your landlord's information such as their contact information and address
-  * The docket number (if you do not have one, you can still continue with the interview)<br>
-  [find your docket number](https://www.mass.gov/info-details/how-to-search-court-dockets?_gl=1*1t4lg0v*_ga*Mjc1NTYwNDQxLjE3NDE2MjkwMjA.*_)&nbsp;<sup>:up-right-from-square:&nbsp;(opens in new tab)</sup>
-   
-  If you do not have any of the above, you can still start the interview without them. Most people take about 15-20 minutes to complete this interview.
-
-  ####After you finish this interview
-  When you are finished, you will need to file this petition with the Court, either by eFile using a valid email address or in person with the Clerk's office.
-
-  #####Not the right form for you?
-  If you need help but this isn't an emergency situation, This site is not a lawyer find a lawyer. 
-  <br> ${ btn_legal_services } 
-
-  ##### Please take immediate action if you notice any of these warning signs:
-  * Sparks or the smell of smoke (fire risk)
-  * The smell of gas (gas leak)
-  * Large cracks in your ceiling or floors
-  If you are in immediate danger and need to find emergency housing, click this button to find emergency housing resources. 
+  If you are in {immediate danger}, click this button to find emergency housing resources. 
 
   <div class="d-flex gap-2 mt-3">
     <a href="https://www.mass.gov/orgs/emergency-housing-help-programs" class="btn btn-warning" target="_blank">Find Emergency Housing</a>
   </div>
   <br>
+
+  ####Can you use this form?
+  1. Are you facing a {housing emergency}?
+  2. Did the other party without a {court order}?
+
+  If you answered yes to the above questions, you may proceed.
+  
+  ####What to gather before you start
+  
+  * Your lease (if you are the tenant)
+  * The other party's information such as their contact information and address
+   
+  If you do not have any of the above, you can still start the interview without them. Most people take about 15-20 minutes to complete this interview.
+
+  ####After you finish this interview
+  When you are finished, you will need to file this petition with the Court, either by eFile using a valid email address or in person with the Clerk's office.
+  
+  ${ collapse_template(not_right_form_template) }
+---
+template: not_right_form_template
+subject: |
+  Not the right form for you?
+content: |
+
+  If you need help but this is not an emergency situation, click the button to find a lawyer who may better assist you. 
+
+  ${ btn_legal_services } 
 ---
 sets:
   - other_parties[i].name.first
@@ -312,12 +322,6 @@ subquestion: |
   
   However, you are still allowed to proceed with this interview and generate your forms if you would like to continue.
 continue button field: eviction_warning_seen
----
-terms: 
-  housing emergency: |
-    This could be your landlord changing the locks without telling you, your landlord refusing to make necessary repairs, your utilities were shut off, there is a safety or health risk in your home. 
-  court order: |
-    If you are currently in a court proceeding with your landlord, and the judge has ordered your landlord to do something against you such as eviction. 
 ---
 id: your contact information
 section: your_information
