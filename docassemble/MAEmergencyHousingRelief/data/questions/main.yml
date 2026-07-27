@@ -388,59 +388,43 @@ validation code: |
 id: Tell Us About the Case
 section: case_information
 question: |
-  What happened between you and your landlord
+  What happened?
 subquestion: |
-  Briefly describe the facts, date, and time of events (if any) that have occurred
+  Briefly describe what happened, including the date and time it occured.
 fields:
-  - "Description of events and facts": facts_description
+  - no label: facts_description
     input type: area
 ---
-id: Landlord Violations
+id: What Happened
 question: |
-  Which of the following violations has your landlord done?
+  Did any of these happen?
 subquestion: |
-  This form allows you to ask for emergency help for something your landlord did
-  or failed to do.
+  Select any of the following that apply to you.
 fields:
-  - 'My landlord breached our contract': violation_breach_contract
+  - 'The contract was breached': violation_breach_contract
     datatype: yesno
     help: |
-      Your landlord breaks the lease if they do not follow its terms. For example, say your lease allows you to have a dog. If your landlord later says no pets are allowed and tries to evict you, that is a breach of contract.
-  - 'My utilities were interefered with': utilities_needed
+      The other party did not follow the terms of the lease, addendum, or other contractual document between you two. 
+  - 'The utilities were interfered with': utilities_needed
     datatype: yesno
-  - 'There are bad conditions in my home': violation_bad_conditions
+  - 'There are bad conditions in the home': violation_bad_conditions
     datatype: yesno
     help: |
-      You can include anything here that is a breach of your to "implied warranty of habitability" of your home. It is an unwritten, unbreakable guarantee that your landlord must provide a home that is safe, decent, sanitary, and meets the minimum standards of the State Sanitary Code. It applies the moment you move in, whether you have a lease or not
-  - 'Other (breach of my quiet enjoyment)': other_issues
+      Unsafe conditions such as a broken front door or broken window.
+  - 'Other issues': other_issues
     datatype: yesno
-  - 'Describe the other thing your landlord did wrong': other_issues_type
+  - 'Description': other_issues_type
     datatype: text
     show if: other_issues
     help: |
-      You can include anything here that is a breach of your right to
-      "quiet enjoyment" of your home. For example: an unsafe living condition;
-      an odor or noise that makes your home unlivable; or anything that 
-      makes you unable to use your home safely and peacefully.
+      An odor or noise that makes the home unlivable, or anything that keeps you from safely entering it. 
 validation code: |
   if not violation_breach_contract and not utilities_needed and not violation_bad_conditions and not other_issues:
     validation_error("You must select at least one incident.")
 help: |
-  #### What is a breach of quiet enjoyment?
-  A breach of quiet enjoyment is something that your landlord did or should
-  have done that makes your home unlivable. This can cover a lot of different
-  issues. The problem needs to be serious and you can get help for issues
-  that the court agrees are emergencies with this form.
+  If none of these sound like your situation, this interview may not apply to you. Find resources that may best assist you.
   
-  Examples might include:
-  
-  * A sewage backup in your basement
-  * A strong unpleasant odor
-  * Constant noise at unreasonable times of day (remember, even if you are
-  working from home, permitted construction may still be allowed)
-  * Unsafe living conditions that your landlord isn't fixing
-  
-  [Read more](https://www.masslegalhelp.org/housing/lt1-chapter-8-rights-decent-place-live)
+  <a href="https://www.mass.gov/info-details/finding-a-lawyer" target="_blank" class="btn btn-warning">Find a Lawyer</a>
 ---
 id: Court Request
 question: |
