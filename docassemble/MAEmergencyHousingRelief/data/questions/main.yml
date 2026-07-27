@@ -374,7 +374,7 @@ validation code: |
 ---
 id: docket number
 question: |
-  What is the docket number for your case?
+  What is the docket number for your eviction case?
 fields:
   - I don't know the docket number: dont_know_docket_number
     datatype: yesno    
