@@ -217,7 +217,7 @@ code: |
   addresses_to_search = [user.address for user in users.complete_elements()]
 ---
 code: |
-  btn_made = '<a href="https://gbls.org/MADE" target="_blank" class="btn btn-primary">MADE</a>'
+  btn_made = '<a href="https://www.mass.gov/info-details/eviction-legal-services-and-mediation" target="_blank" class="btn btn-primary">Eviction Help</a>'
   btn_uptocode = '<a href="https://uptocode.org/" target="_blank" class="btn btn-info">UpToCode</a>'
   btn_legal_services = '<a href="https://www.mass.gov/info-details/finding-a-lawyer" target="_blank" class="btn btn-warning">Find a Lawyer</a>'
   btn_public_housing = '<a href="https://www.mass.gov/how-to/report-hlc-program-concerns" target="_blank" class="btn btn-warning">Public Housing Help</a>'
@@ -304,7 +304,7 @@ id: eviction warning screen
 question: |
   Warning: Ongoing eviction case
 subquestion: |
-  If there is an active eviction case against you, and your landlord has a court order for eviction, use ${ btn_made } for the best chance to stop them. 
+  If there is an active eviction case against you, use ${ btn_made } to find legal help. 
 
   This site is not a lawyer find a lawyer. 
   
