@@ -111,7 +111,7 @@ code: |
   temporary_restraining_order_intro
   nav.set_section("eligibility_screening")
   eviction_flow_complete
-  if eviction_warning_seen:
+  if eviction_case_yes:
       docket_number
   
   nav.set_section ("your_information")
