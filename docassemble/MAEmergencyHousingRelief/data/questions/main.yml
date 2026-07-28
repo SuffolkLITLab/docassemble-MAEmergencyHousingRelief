@@ -89,12 +89,12 @@ reconsider: True
 variable name: al_nav_sections
 data:
   - getting_started: Get started
+  - emergency_relief: Request emergency relief
   - eligibility_screening: Eligibility
   - your_information: Your information
   - landlord_information: Landlord information 
   - court_selection: Court selection
   - case_information: Case information
-  - emergency_relief: Request emergency relief
   - affidavit_of_indigency: Affidavit of indigency
     hidden: ${ showifdef("indigency_q") != True }
   - review_answers: Review answers
@@ -109,6 +109,25 @@ code: |
   allowed_courts = ['Housing Court']
   nav.set_section("getting_started")
   temporary_restraining_order_intro
+  
+  nav.set_section("emergency_relief")
+  emergency_relief_timing_warning
+  emergency_today
+  if emergency_today:
+      issue_a_tro
+  else:
+      issue_a_tro = False
+  emergency_soon_hearing
+  if emergency_soon_hearing:
+      issue_a_son
+  else:
+      issue_a_son = False
+  emergency_ongoing_protection
+  if emergency_ongoing_protection:
+      request_a_pi
+  else:
+      request_a_pi = False
+  
   nav.set_section("eligibility_screening")
   eviction_flow_complete
   if eviction_case_yes:
@@ -121,6 +140,7 @@ code: |
   plaintiffs[0].phone_number
   plaintiffs[0].address.address
   plaintiffs[0].email
+  
   nav.set_section("landlord_information")
   defendants.gather()
   defendants[0].address.address
@@ -129,30 +149,12 @@ code: |
   
   nav.set_section("court_selection")
   trial_court
+  
   nav.set_section("case_information")
   facts_description
   utilities_needed
-  stop_fail_repairs
-  uptocode_referral_complete  
+  stop_fail_repairs 
 
-  nav.set_section("emergency_relief")
-  emergency_relief_timing_warning
-  emergency_today
-  emergency_danger_warning
-  emergency_soon_hearing
-  emergency_ongoing_protection
-  if emergency_today or emergency_danger_warning:
-      issue_a_tro
-  else:
-      issue_a_tro = False
-  if emergency_soon_hearing:
-      issue_a_son
-  else:
-      issue_a_son = False
-  if emergency_ongoing_protection:
-      request_a_pi
-  else:
-      request_a_pi = False
   
   issue_tro
   if issue_tro:
@@ -271,6 +273,84 @@ content: |
   If you need help but this is not an emergency situation, click the button to find a lawyer who may better assist you. 
 
   ${ btn_legal_services } 
+---
+id: emergency relief timing warning
+continue button field: emergency_relief_timing_warning
+continue button label: I understand
+question: |
+  Before you ask the court for emergency help
+subquestion: |
+ You can only ask for a **Temporary Restraining Order** or a **Short Order
+  of Notice** at the same time you file your complaint. They are part of
+  starting your case. You cannot add them to a case later.
+
+  A **Preliminary Injunction** is different. You can ask for one when you
+  file your complaint, or later on while your case is still open.
+---
+id: assessment temporary restraining order
+question: |
+  Do you need an immediate court order?
+subquestion: |
+  A judge can give you a Temporary Restraining Order right away without telling the other party first. 
+  
+  This can happen if you can show that you would be seriously hurt or harmed if you had to wait for the other party to respond. 
+  
+fields:
+  - 'Does this sound like something you need?': emergency_today
+    datatype: yesnoradio
+---
+id: assessment danger warning
+question: |
+  Would telling the other party take too much time?
+subquestion: |
+  Usually, the court requires you to tell the other party of the order before a judge makes a decision, this may not be feasible in your situation. 
+
+  **Choose Yes if:**
+  * You believe your landlord will destroy your belongings if they find out you are going to court.
+  * You believe your landlord will immediately lock you out if warned.
+  * You have a reasonable fear for your physical safety if the landlord is notified beforehand.
+fields:
+  - no label: emergency_danger_warning
+    datatype: yesnoradio
+---
+id: assessment fast hearing
+question: |
+  Do you need a judge to hear your case in the next few days?
+subquestion: |
+  Normally, court hearings take several weeks to schedule. 
+
+  **Choose Yes if:**
+  Your living situation is unsafe or highly unstable, and you can wait 2 or 3 days, but you cannot wait weeks for a standard court date.
+fields:
+  - no label: emergency_soon_hearing
+    datatype: yesnoradio
+---
+id: assessment ongoing protection
+question: |
+  Do you need a court order that protects you for the next few months?
+subquestion: |
+  Some emergency court orders like the Temporary Restraining Order only last for 10 days. 
+
+  #### **Choose Yes if:**
+  * You need an ongoing rule that lasts until your entire lawsuit is completely finished. 
+  * *Example:* An order pausing an eviction, or an order forcing your landlord to keep the utilities on while the judge reviews your full case over the coming months.
+fields:
+  - no label: emergency_ongoing_protection
+    datatype: yesnoradio
+---
+id: issue a tro
+question: |
+  It sounds like you may need a Temporary Restraining Order
+subquestion: |
+  ##### What is a Temporary Restraining Order (TRO)?
+  An emergency court order telling the other party to stop doing something illegal or to fix a dangerous problem in the home right away. 
+
+  ##### How long does a TRO last?
+  A TRO works fast, but it is only good for about **10 days.** After that, both parties will need to go to a full court hearing where the judge will decide what happens next. 
+
+fields:
+  - 'Do you want a Temporary Restraining Order?': issue_a_tro
+    datatype: yesnoradio
 ---
 sets:
   - other_parties[i].name.first
@@ -397,9 +477,9 @@ fields:
 ---
 id: What Happened
 question: |
-  Did any of these happen?
+  What problems are you having?
 subquestion: |
-  Select any of the following that apply to you.
+  Select any of the following that apply to your situation.
 fields:
   - 'The contract was breached': violation_breach_contract
     datatype: yesno
@@ -407,17 +487,15 @@ fields:
       The other party did not follow the terms of the lease, addendum, or other contractual document between you two. 
   - 'The utilities were interfered with': utilities_needed
     datatype: yesno
-  - 'There are bad conditions in the home': violation_bad_conditions
+  - 'The home has unsafe or unsanitary conditions': violation_bad_conditions
+    datatype: yesno
+  - 'Other': other_issues
     datatype: yesno
     help: |
-      Unsafe conditions such as a broken front door or broken window.
-  - 'Other issues': other_issues
-    datatype: yesno
+      Other issues may include odor or noise that would make the home unlivalbe. 
   - 'Description': other_issues_type
     datatype: text
     show if: other_issues
-    help: |
-      An odor or noise that makes the home unlivable, or anything that keeps you from safely entering it. 
 validation code: |
   if not violation_breach_contract and not utilities_needed and not violation_bad_conditions and not other_issues:
     validation_error("You must select at least one incident.")
@@ -428,32 +506,29 @@ help: |
 ---
 id: Court Request
 question: |
-  What are you asking the court to do?
+  Your request to the Court
 subquestion: |
-  You told us about the following problems:
+  Based on what you told us:
 
   % if violation_breach_contract:
-  * Your landlord breached your lease agreement
+  * Your contract was breached
   % endif
   % if utilities_needed:
-  * Your landlord shut off your utilities or did not pay for utilities they 
-  are required to pay
+  * Your utilities were interfered with
   % endif
   % if violation_bad_conditions:
-  * Your landlord breached your implied warranty of habitability by not making necessary repairs
+  * The home has unsafe or unsanitary conditions
   % endif
-  
-  We have already checked the boxes that make sense based on your earlier
-  answers, but you should review and make any changes as needed.
 
-  Check the boxes that apply below.
+  We have checked what you may want the Court to order the other party to do. Review the selection and check any others you would like to add.
+
 fields:
-  - 'Stop trying to evict me from my home': stop_eviction
+  - 'Stop trying to evict me without court order': stop_eviction
     datatype: yesno
-  - 'Provide me utilities': utilities_needed
+  - 'Provide utilities to the home': utilities_needed
     datatype: yesno
     default: ${ utilities_needed }
-  - 'What utilities do you need back?': utilities_needed_type
+  - 'What utilities need to be restored?': utilities_needed_type
     datatype: text
     show if: utilities_needed
   - 'Make repairs to my home': stop_fail_repairs
@@ -466,155 +541,6 @@ fields:
   - 'What do you want the court to do?': other_court_request_type
     datatype: text
     show if: other_court_request
-    
-validation code: |
-  if not showifdef('utilities_needed') and not showifdef('stop_eviction') and not showifdef('stop_fail_repairs') and not showifdef('stop_return_belongings') and not showifdef('other_court_request'):
-      validation_error("You must ask the court to do at least one thing.")
----
-id: uptocode referral logic
-code: |
-  if violation_bad_conditions or stop_fail_repairs:
-      uptocode_warning_seen
-  uptocode_referral_complete = True
----
-id: uptocode referral warning
-continue button field: uptocode_warning_seen
-continue button label: Continue
-question: |
-  Warning: UpToCode may be a better fit for repairs
-subquestion: |
-  You told us your landlord has not fixed bad conditions in your home.
-
-  There is a free website that can help you with repairs, and it is called
-  **UpToCode**. It is built for tenants in Massachusetts, and it is free.
-
-  #### What UpToCode can do for you
-
-  * Make a list of the problems: you go through your home room by room
-  and write down everything that is wrong. You can also add photos and the
-  date that each problem started.
-  
-  * Show you the law: a law called the State Sanitary Code says what
-  your landlord has to fix. UpToCode explains that law in plain words, so
-  you do not have to read the legal text yourself.
-  
-  * Write to your landlord: you answer some questions, and UpToCode
-  writes the whole letter for you.
-  
-  * Ask the city for an inspection: a city inspector can visit your
-  home and order your landlord to fix the problems.
-  
-  * Go to court: UpToCode can help you ask a judge to order repairs.
-  It can also help you ask your landlord to pay you money.
-
-  You decide which of these you want to do, and you do not have to do all
-  of them. Most tenants finish in 20 minutes to 1 hour, and UpToCode is
-  available in English and Spanish.
-
-  ${ btn_uptocode }
-
-  #### Which one should you use?
-
-  Use this form if you have an emergency and you need a judge to act in
-  the next few days. For example, your landlord locked you out, or shut off
-  your heat, water, or electricity.
-
-  Use **UpToCode** if the main thing you want is repairs. It is also the
-  better choice if you have not told your landlord about the problem in
-  writing yet. A judge will want evidence that your landlord knew about the
-  problem and decided not to fix it. UpToCode helps you build that evidence.
-
-  You can use both, and starting UpToCode today does not stop you from
-  coming back to this form later.
-
-  You may continue with this form if you wish.
----
-id: emergency relief timing warning
-continue button field: emergency_relief_timing_warning
-continue button label: I understand
-question: |
-  Before you ask the court for emergency help
-subquestion: |
- You can only ask for a **Temporary Restraining Order** or a **Short Order
-  of Notice** at the same time you file your complaint. They are part of
-  starting your case. You cannot add them to a case later.
-
-  A **Preliminary Injunction** is different. You can ask for one when you
-  file your complaint, or later on while your case is still open.
----
-id: assessment active emergency
-question: |
-  Will you suffer severe harm if the judge does not step in today?
-subquestion: |
-  You already told us about the problems you are having with your landlord. Now we need to know how fast the court must act. 
-
-  **Choose Yes if:**
-  Your situation is an extreme crisis, and waiting even 24 to 48 hours would cause severe harm to your health, safety, or property.
-fields:
-  - no label: emergency_today
-    datatype: yesnoradio
----
-id: assessment danger warning
-question: |
-  Would warning your landlord about this court case put you or your property in immediate danger?
-subquestion: |
-  Usually, the court requires you to tell your landlord before a judge makes a decision. 
-
-  #### **Choose Yes if:**
-  * You believe your landlord will destroy your belongings if they find out you are going to court.
-  * You believe your landlord will immediately lock you out if warned.
-  * You have a reasonable fear for your physical safety if the landlord is notified beforehand.
-fields:
-  - no label: emergency_danger_warning
-    datatype: yesnoradio
----
-id: assessment fast hearing
-question: |
-  Do you need a judge to hear your case in the next few days?
-subquestion: |
-  Normally, court hearings take several weeks to schedule. 
-
-  **Choose Yes if:**
-  Your living situation is unsafe or highly unstable, and you can wait 2 or 3 days, but you cannot wait weeks for a standard court date.
-fields:
-  - no label: emergency_soon_hearing
-    datatype: yesnoradio
----
-id: assessment ongoing protection
-question: |
-  Do you need a court order that protects you for the next few months?
-subquestion: |
-  Some emergency court orders only last for 10 days. 
-
-  #### **Choose Yes if:**
-  * You need an ongoing rule that lasts until your entire lawsuit is completely finished. 
-  * *Example:* An order pausing an eviction, or an order forcing your landlord to keep the utilities on while the judge reviews your full case over the coming months.
-fields:
-  - no label: emergency_ongoing_protection
-    datatype: yesnoradio
----
-id: issue a tro
-question: |
-  It sounds like you may need a Temporary Restraining Order
-subquestion: |
-  Based on what you have told us, it sounds like you may benefit from a Temporary Restraining Order. 
-  
-  ##### What is a Temporary Restraining Order (TRO)?
-  An emergency court order telling your landlord to stop doing something illegal or to fix a dangerous problem in your home right away. 
-
-  **How long does a TRO last?**
-  A TRO works fast, but it is only good for about 10 days. After that, you and your landlord will go to a full court hearing where a judge will decide what happens next. 
-
-  #### **How would a TRO benefit you?**
-  * Stop your landlord from breaching your contract
-  * Stop your landlord from shutting off your utilities
-  * Order your landlord to make emergency repairs right away
-  * Stop your landlord from trying to evict you from your home
-  * Order your landlord to return your belongings
-  
-fields:
-  - 'Do you want a Temporary Restraining Order?': issue_a_tro
-    datatype: yesnoradio
 ---
 id: issue a short order of notice
 question: |
