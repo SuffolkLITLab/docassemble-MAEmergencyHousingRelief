@@ -117,6 +117,13 @@ code: |
       issue_a_tro
   else:
       issue_a_tro = False
+  issue_tro = issue_a_tro
+  emergency_soon_hearing
+  if emergency_soon_hearing:
+      issue_a_son
+  else:
+      issue_a_son = False
+  issue_son = issue_a_son
   emergency_ongoing_protection
   if emergency_ongoing_protection:
       request_a_pi
@@ -127,6 +134,7 @@ code: |
       issue_a_son
   else:
       issue_a_son = False
+  request_pi = request_a_pi
   
   nav.set_section("eligibility_screening")
   eviction_flow_complete
@@ -155,9 +163,7 @@ code: |
   utilities_needed
   stop_fail_repairs 
 
-  
-  issue_tro
-  if issue_tro:
+  if issue_a_tro:
       waiver_yes_no
       plaintiff_request
   nav.set_section("affidavit_of_indigency")
@@ -366,6 +372,9 @@ subquestion: |
   * Order your landlord to make emergency repairs
   * Stop your landlord from trying to evict you from your home
   
+  #### **Choose Yes if:**
+  * You need an ongoing ruling that lasts until your entire lawsuit is completely finished. 
+  * *Example:* An order pausing an eviction, or an order forcing your landlord to keep the utilities on while the judge reviews your full case over the coming months.
 fields:
   - 'Do you want to request a Preliminary Injunction?': request_a_pi
     datatype: yesnoradio
@@ -579,16 +588,9 @@ subquestion: |
   Based on what you have told us, it sounds like you may benefit from a Short Order of Notice. 
   
   #####What is a Short Order of Notice?
-  A Short Order of Notice is a procedural tool used to bypass standard court timelines when a matter is urgent. Typically, courts require you to give a landlord a specific amount of advance notice before a hearing.
+  * A Short Order of Notice is a procedural tool used to bypass standard court timelines when a matter is urgent. Typically, courts require you to give a landlord a specific amount of advance notice before a hearing.
+  * If you are facing an emergency, you cannot wait the standard amount of time. This asks the court to shrink that waiting period, allowing the judge to hear your emergency request much sooner.
 
-  **Why is this important?**
-  If you are facing an emergency, you cannot wait the standard amount of time. This asks the court to shrink that waiting period, allowing the judge to hear your emergency request much sooner.
-
-  **How would a Short Order of Notice benefit you?**
-  It allows you to get in front of a judge faster to ask them to:
-
-  * Stop your landlord from shutting off your utilities
-  * Stop your landlord from trying to evict you from your home
   
 fields:
   - 'Do you want to request a Short Order of Notice?': issue_a_son
@@ -624,6 +626,28 @@ help: |
 
   **Short Order of Notice** <br>
   A Short Order of Notice speeds up the court process when you can't wait. Normally, you must give your landlord advance notice before a hearing. But if you're facing homelessness right away, that wait could be too long. A Short Order of Notice asks the judge to shorten that wait, so your case can be heard much sooner.
+terms:
+  notice: |
+    A notice means officially telling your landlord about a legal action so they know what is happening and has a fair chance to try and fix the problem before going to court.
+---
+id: request a preliminary injunction
+question: |
+  It sounds like you may need to request a Preliminary Injunction
+subquestion: |
+  Based on what you have told us, it sounds like you may benefit in requesting a Preliminary Injunction.
+  
+  #####What is a Preliminary Injunction?
+  A court order that tells your landlord to stop a harmful action. It must be clear and specific about what they need to stop doing. 
+
+  **How is it different from a Temporary Restraining Order?**
+  You must notify your landlord of this legal action and the injunction may last longer than 10 days. The judge to decide will weigh: 
+  
+  1. How likely you are to win your case
+  2. How much harm you would face if they said no
+
+fields:
+  - 'Do you want to request a Preliminary Injunction?': request_a_pi
+    datatype: yesnoradio
 ---
 id: Your Request
 question: |
@@ -688,7 +712,7 @@ subquestion: |
   ${ verified_complaint_and_request_for_attachment.as_pdf(key='preview') }<br>
   ${ action_button_html(url_action('review_verified_complaint_and_request_for'), label='Edit answers', color='info') }<br>
   
-  % if issue_tro:
+  % if issue_a_tro:
   **Temporary Restraining Order:**<br>
   ${ temporary_restraining_order_attachment.as_pdf(key='preview') }<br>
   ${ action_button_html(url_action('review_temporary_restraining_order'), label='Edit answers', color='info') }
@@ -857,8 +881,8 @@ objects:
   - verified_complaint_and_request_for_attachment: ALDocument.using(title="Verified complaint and request for emergency relief", filename="verified_complaint_and_request_for", enabled=True, has_addendum=False)
   
   # 2. Define the Temporary Restraining Order Documents
-  - temporary_restraining_order_Post_interview_instructions: ALDocument.using(title="TRO Next Steps", filename="temporary_restraining_order_next_steps.docx", enabled=issue_tro, has_addendum=False)
-  - temporary_restraining_order_attachment: ALDocument.using(title="Temporary Restraining Order", filename="temporary_restraining_order", enabled=issue_tro, has_addendum=False)
+  - temporary_restraining_order_Post_interview_instructions: ALDocument.using(title="TRO Next Steps", filename="temporary_restraining_order_next_steps.docx", enabled=issue_a_tro, has_addendum=False)
+  - temporary_restraining_order_attachment: ALDocument.using(title="Temporary Restraining Order", filename="temporary_restraining_order", enabled=issue_a_tro, has_addendum=False)
 
   # 3. Create the Consolidated 0Bundles
   - al_user_bundle: ALDocumentBundle.using(elements=[verified_complaint_and_request_for_Post_interview_instructions, verified_complaint_and_request_for_attachment, temporary_restraining_order_Post_interview_instructions, temporary_restraining_order_attachment, affidavitofindigency_attachment], filename="emergency_relief_and_tro_user_bundle", title="All forms to download for your records", enabled=True)
