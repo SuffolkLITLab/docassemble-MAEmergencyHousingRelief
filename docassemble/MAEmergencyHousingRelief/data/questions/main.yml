@@ -161,8 +161,8 @@ code: |
   if issue_a_tro:
       waiver_yes_no
       plaintiff_request
-  nav.set_section("affidavit_of_indigency")
   indigency_q
+  nav.set_section("affidavit_of_indigency")
   if indigency_q:
       set_fee_waiver_defaults
       if not is_indigent:
@@ -172,6 +172,7 @@ code: |
   
   nav.set_section("review_answers")
   verified_complaint_and_request_for_preview_question
+  users[0].states_above_true
   nav.set_section("signature_and_submit")
   basic_questions_signature_flow
   nav.set_section("download_next_steps")
@@ -668,6 +669,21 @@ subquestion: |
   
   Remember to come back to this window to continue and sign your form.
 continue button field: verified_complaint_and_request_for_preview_question    
+---
+id: affirmation and oath of no perjury
+question: |
+  Signing under oath 
+subquestion: |
+  Your application must be signed under oath. That means everything you say must be true as far as you know.
+fields:
+  - no label: users[i].states_above_true
+    datatype: checkboxes
+    minlength: 1
+    choices:
+      - I affirm that the answers I have given are true, under the penalties of perjury: states_true
+    validation messages:
+      minlength: |
+        You cannot keep going unless you did your best to tell the truth.
 ---
 id: verified complaint and request for review screen
 event: review_verified_complaint_and_request_for
