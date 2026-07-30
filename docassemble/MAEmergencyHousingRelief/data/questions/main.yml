@@ -129,6 +129,7 @@ code: |
       request_a_pi
   else:
       request_a_pi = False
+ 
   request_pi = request_a_pi
   
   nav.set_section("eligibility_screening")
@@ -292,26 +293,87 @@ id: assessment temporary restraining order
 question: |
   Do you need an immediate court order?
 subquestion: |
-  A judge can give you a Temporary Restraining Order right away without telling the other party first. 
+  A judge can issue an order telling the other party to stop doing something right away.
   
-  This can happen if you can show that you would be seriously hurt or harmed if you had to wait for the other party to respond. 
+  This can happen if you can show the court that you would face immediate harm or harm that cannot be undone if you had to wait for the other party to respond. 
   
 fields:
-  - 'Does this sound like something you need?': emergency_today
+  - 'Does this sound like a harm you would face?': emergency_today
     datatype: yesnoradio
 ---
-id: assessment danger warning
+id: issue a tro
 question: |
-  Would telling the other party take too much time?
+  It sounds like you may need a Temporary Restraining Order
 subquestion: |
-  Usually, the court requires you to tell the other party of the order before a judge makes a decision, this may not be feasible in your situation. 
+  ## What is a Temporary Restraining Order (TRO)?
+  An emergency court order telling the other party to stop doing something illegal or to fix a dangerous problem in the home right away. 
 
-  **Choose Yes if:**
-  * You believe your landlord will destroy your belongings if they find out you are going to court.
-  * You believe your landlord will immediately lock you out if warned.
-  * You have a reasonable fear for your physical safety if the landlord is notified beforehand.
+  ## How long does a TRO last?
+  A TRO works fast, but it only lasts for **10 days.** 
+  
+  **What happens after the 10 days?**
+  After that, both parties will need to go to a court hearing where you can request a preliminary injunction if you need a longer restraining order. 
+
+  ${ collapse_template(extend_a_tro_template) }
+
 fields:
-  - no label: emergency_danger_warning
+  - 'Do you want to request a TRO?': issue_a_tro
+    datatype: yesnoradio
+---
+terms:
+  notice: |
+    A notice means officially telling your landlord about a legal action so they know what is happening and has a fair chance to try and fix the problem before going to court.
+---
+template: extend_a_tro_template
+subject: |
+  Can you extend a TRO?
+content: |
+  The order lasts no more than 10 days. A judge can extend it for another 10 days if there is a good reason or if your landlord agrees to extend it.
+---
+id: assessment ongoing protection
+question: |
+  Do you need ongoing protection?
+subquestion: |
+  You may ask the judge for ongoing protection which can last longer than 10 days. The other party will need to receive {notice} of this case before the judge can grant your request.
+
+fields:
+  - 'Do you need ongoing protection?': emergency_ongoing_protection
+    datatype: yesnoradio
+---
+id: request a preliminary injunction
+question: |
+  It sounds like you may need to request a Preliminary Injunction
+subquestion: |
+  Based on what you have told us, it sounds like you may benefit in requesting a Preliminary Injunction.
+  
+  #####What is a Preliminary Injunction?
+  A court order that tells your landlord to stop a harmful action. It must be clear and specific about what they need to stop doing. 
+
+  **How is it different from a Temporary Restraining Order?**
+  You must notify your landlord of this legal action and the injunction may last longer than 10 days.  
+
+  **Will the judge automatically grant it?**
+  No. The judge will weigh: 
+  
+  1. How likely you are to win your case
+  2. How much harm you would face if they said no
+
+  If the judge does not think you would be greatly harmed, they may reject your request. 
+
+  **How would a Preliminary Injunction benefit you?**
+  The order can protect you right away without having to wait for a full trial. 
+  
+  #### For example it could:
+  * Stop your landlord from shutting off your utilities
+  * Order your landlord to make emergency repairs
+  * Stop your landlord from trying to evict you from your home
+  
+  #### **Choose Yes if:**
+  * You need an ongoing ruling that lasts until your entire lawsuit is completely finished. 
+  * *Example:* An order pausing an eviction, or an order forcing your landlord to keep the utilities on while the judge reviews your full case over the coming months.
+  
+fields:
+  - 'Do you want to request a Preliminary Injunction?': request_a_pi
     datatype: yesnoradio
 ---
 id: assessment fast hearing
@@ -322,35 +384,9 @@ subquestion: |
 
   **Choose Yes if:**
   Your living situation is unsafe or highly unstable, and you can wait 2 or 3 days, but you cannot wait weeks for a standard court date.
+  
 fields:
   - no label: emergency_soon_hearing
-    datatype: yesnoradio
----
-id: assessment ongoing protection
-question: |
-  Do you need a court order that protects you for the next few months?
-subquestion: |
-  Some emergency court orders like the Temporary Restraining Order only last for 10 days. 
-
-  #### **Choose Yes if:**
-  * You need an ongoing ruling that lasts until your entire lawsuit is completely finished. 
-  * *Example:* An order pausing an eviction, or an order forcing your landlord to keep the utilities on while the judge reviews your full case over the coming months.
-fields:
-  - no label: emergency_ongoing_protection
-    datatype: yesnoradio
----
-id: issue a tro
-question: |
-  It sounds like you may need a Temporary Restraining Order
-subquestion: |
-  ##### What is a Temporary Restraining Order (TRO)?
-  An emergency court order telling the other party to stop doing something illegal or to fix a dangerous problem in the home right away. 
-
-  ##### How long does a TRO last?
-  A TRO works fast, but it is only good for about **10 days.** After that, both parties will need to go to a full court hearing where the judge will decide what happens next. 
-
-fields:
-  - 'Do you want a Temporary Restraining Order?': issue_a_tro
     datatype: yesnoradio
 ---
 sets:
@@ -558,6 +594,36 @@ fields:
   - 'Do you want to request a Short Order of Notice?': issue_a_son
     datatype: yesnoradio
 ---
+id: Mass Civ Pro
+mandatory: false
+question: |
+  Which of the following options (if any) would you like to ask the court to do?
+subquestion: |
+  We have already checked the boxes that make sense based on your earlier
+  answers, but you should review and make any changes as needed.
+  
+fields:
+  - 'Issue a Temporary Restraining Order (valid for 10 days only; may be requested without immediate notice to the other side)': issue_tro
+    datatype: yesno
+    default: ${ issue_a_tro }
+    
+  - 'Request a Preliminary Injunction (may be issued for longer than 10 days; notice to the other side is required)': request_pi
+    datatype: yesno
+    default: ${ request_a_pi }
+    
+  - 'Issue a Short Order of Notice (a shortened notice period to the other side so the Court can hear this request)': issue_son
+    datatype: yesno
+    default: ${ issue_a_son }
+
+help: |
+  **Temporary Restraining Order (TRO)** <br>
+  A TRO is like an emergency "pause button" from a judge. In a housing case, you might ask for this if your landlord tries to illegally evict you before the legal process is finished. A TRO protects your safety and housing for up to 10 days, until a full hearing can happen.
+
+  **Preliminary Injunction** <br>
+  A Preliminary Injunction is a court order that lasts longer than a TRO. It keeps things as they are while the court reviews your full case. Unlike a TRO, you must formally notify your landlord first. This gives them a chance to respond and share their side before the judge decides.
+
+  **Short Order of Notice** <br>
+  A Short Order of Notice speeds up the court process when you can't wait. Normally, you must give your landlord advance notice before a hearing. But if you're facing homelessness right away, that wait could be too long. A Short Order of Notice asks the judge to shorten that wait, so your case can be heard much sooner.
 terms:
   notice: |
     A notice means officially telling your landlord about a legal action so they know what is happening and has a fair chance to try and fix the problem before going to court.
