@@ -129,11 +129,7 @@ code: |
       request_a_pi
   else:
       request_a_pi = False
-  emergency_soon_hearing
-  if emergency_soon_hearing:
-      issue_a_son
-  else:
-      issue_a_son = False
+ 
   request_pi = request_a_pi
   
   nav.set_section("eligibility_screening")
@@ -309,10 +305,10 @@ id: issue a tro
 question: |
   It sounds like you may need a Temporary Restraining Order
 subquestion: |
-  ##### What is a Temporary Restraining Order (TRO)?
+  ## What is a Temporary Restraining Order (TRO)?
   An emergency court order telling the other party to stop doing something illegal or to fix a dangerous problem in the home right away. 
 
-  ##### How long does a TRO last?
+  ## How long does a TRO last?
   A TRO works fast, but it only lasts for **10 days.** 
   
   **What happens after the 10 days?**
@@ -333,7 +329,7 @@ subject: |
   Can you extend a TRO?
 content: |
   The order lasts no more than 10 days. A judge can extend it for another 10 days if there is a good reason or if your landlord agrees to extend it.
-
+---
 id: assessment ongoing protection
 question: |
   Do you need ongoing protection?
@@ -375,6 +371,7 @@ subquestion: |
   #### **Choose Yes if:**
   * You need an ongoing ruling that lasts until your entire lawsuit is completely finished. 
   * *Example:* An order pausing an eviction, or an order forcing your landlord to keep the utilities on while the judge reviews your full case over the coming months.
+  
 fields:
   - 'Do you want to request a Preliminary Injunction?': request_a_pi
     datatype: yesnoradio
@@ -387,6 +384,7 @@ subquestion: |
 
   **Choose Yes if:**
   Your living situation is unsafe or highly unstable, and you can wait 2 or 3 days, but you cannot wait weeks for a standard court date.
+  
 fields:
   - no label: emergency_soon_hearing
     datatype: yesnoradio
