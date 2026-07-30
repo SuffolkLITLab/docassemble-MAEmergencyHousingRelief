@@ -183,7 +183,6 @@ comment: |
 mandatory: true  
 code: |
   al_intro_screen
-  verified_complaint_and_request_for_intro
   interview_order_verified_complaint_and_request_for
   signature_date
   # Store anonymous data for analytics / statistics
@@ -230,9 +229,9 @@ terms:
   housing emergency: |
    You cannot enter the apartment, your utilities were shut off, the apartment has become unsafe or unsanitary to live in.
   court order: |
-    An offical order from a judge.
+    An official order from a judge.
   immediate danger: |
-    If you see smoke, smell gas, or notice large cracks in the cieling or floors. 
+    If you see smoke, smell gas, or notice large cracks in the ceiling or floors. 
 ---
 id: introduction to interview
 continue button field: temporary_restraining_order_intro
@@ -336,7 +335,7 @@ question: |
   It sounds like you may need a Short Order of Notice
 subquestion: |
   ## What is a Short Order of Notice?
-  A Short Order of Notice can be used to bypass standard court timelines when a matter is urgent. 
+  A Short Order of Notice can be used to bypass standard court timeline when a matter is urgent. 
   
   If you are facing an emergency, and cannot wait the standard amount of time you can request the court to shorten the waiting period, allowing the judge to hear your emergency request much sooner.
 
@@ -377,27 +376,6 @@ subquestion: |
 fields:
   - 'Do you want to request a Preliminary Injunction?': request_a_pi
     datatype: yesnoradio
----
-id: Mass Civ Pro
-mandatory: false
-question: |
-  Which of the following options (if any) would you like to ask the court to do?
-subquestion: |
-  We have already checked the boxes that make sense based on your earlier
-  answers, but you should review and make any changes as needed.
-  
-fields:
-  - 'Issue a Temporary Restraining Order (valid for 10 days only; may be requested without immediate notice to the other side)': issue_tro
-    datatype: yesno
-    default: ${ issue_a_tro }
-    
-  - 'Request a Preliminary Injunction (may be issued for longer than 10 days; notice to the other side is required)': request_pi
-    datatype: yesno
-    default: ${ request_a_pi }
-    
-  - 'Issue a Short Order of Notice (a shortened notice period to the other side so the Court can hear this request)': issue_son
-    datatype: yesno
-    default: ${ issue_a_son }
 ---
 sets:
   - other_parties[i].name.first
@@ -517,7 +495,7 @@ section: case_information
 question: |
   What happened?
 subquestion: |
-  Briefly describe what happened, including the date and time it occured.
+  Briefly describe what happened, including the date and time it occurred.
 fields:
   - no label: facts_description
     input type: area
@@ -539,7 +517,7 @@ fields:
   - 'Other': other_issues
     datatype: yesno
     help: |
-      Other issues may include odor or noise that would make the home unlivalbe. 
+      Other issues may include odor or noise that would make the home unlivable. 
   - 'Description': other_issues_type
     datatype: text
     show if: other_issues
@@ -633,13 +611,13 @@ code: |
 ---
 id: Fee Waiver
 question: |
-  Would you like to file an affidavit of indigency
+  Would you like to apply for a fee waiver
 fields:
   - no label: indigency_q
     datatype: yesnoradio
 auto terms:
-  Affidavit of Indigency: |
-   A fee waiver for all the fees and costs required to start a case and continue it such filing fees, court fees, and service costs.
+  fee waiver: |
+   A fee waiver also known as a affidavit of indigency for all the fees and costs required to start a case and continue it such filing fees, court fees, and service costs.
 ---
 id: preview verified_complaint_and_request_for
 section: review_answers
