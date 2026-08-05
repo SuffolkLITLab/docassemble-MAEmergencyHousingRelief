@@ -11,7 +11,7 @@ metadata:
   short title: >-
     Get Emergency Housing Relief
   description: |-
-    This interview helps someone in Massachusetts get emergency housing relief. 
+    This interview helps someone in Massachusetts get emergency housing relief.
   authors:
     - Suffolk LIT Lab
   approved_by:
@@ -22,10 +22,10 @@ metadata:
       url: https://www.mass.gov/info-details/trial-court
       logo: https://www.mass.gov/files/styles/organization_logo/public/2025-08/Trial-Court-Seal-Final-color.png?itok=tQKsUwsu
   can_I_use_this_form: |
-    You can use this form if you want to ask the court for emergency housing relief.
+    Use this form to ask the court for emergency housing relief.
   before_you_start: |
-    Before you start, gather information about what specific details 
-    you want the court to keep private and why this is necessary.
+    Before you start, gather your lease and your landlord's name, address,
+    phone number, and email. You can still start without them.
   when_you_are_finished: |
   efiling_enabled: False
   integrated_efiling: False
@@ -35,7 +35,7 @@ metadata:
   landing_page_url: >-
     https://courtformsonline.org/
   maturity: production
-  estimated_completion_minutes: 10
+  estimated_completion_minutes: 15
   estimated_completion_delta: 5
   LIST_topics:
     - "CO-00-00-00-00"
@@ -228,41 +228,48 @@ code: |
 ---
 terms: 
   housing emergency: |
-   You cannot enter the apartment, your utilities were shut off, the apartment has become unsafe or unsanitary to live in.
+    You are locked out of your home. Or your utilities are shut off. Or your
+    home is not safe or clean enough to live in.
   court order: |
     An official order from a judge.
   immediate danger: |
-    If you see smoke, smell gas, or notice large cracks in the ceiling or floors. 
+    You see smoke, smell gas, or notice large cracks in the ceiling or floors.
 ---
 id: introduction to interview
 continue button field: temporary_restraining_order_intro
 question: |
   What does this interview do?
 subquestion: |
-  This interview will help you file a complaint to get emergency housing relief and issue a temporary restraining order, along with a preliminary injunction and short order notice form.
+  This interview helps you ask the court for emergency housing relief. It can
+  also make three other forms if you need them: a temporary restraining order,
+  a preliminary injunction, and a short order of notice.
 
-  If you are in {immediate danger}, click this button to find emergency housing resources. 
+  If you are in {immediate danger}, use this button to find emergency housing
+  help.
 
   <div class="d-flex gap-2 mt-3">
     <a href="https://www.mass.gov/orgs/emergency-housing-help-programs" class="btn btn-warning" target="_blank">Find Emergency Housing</a>
   </div>
   <br>
 
-  ####Can you use this form?
+  #### Can you use this form?
+
   1. Are you facing a {housing emergency}?
-  2. Did the other party without a {court order}?
+  2. Did your landlord do this without a {court order}?
 
-  If you answered yes to the above questions, you may proceed.
-  
-  ####What to gather before you start
-  
-  * Your lease (if you are the tenant)
-  * The other party's information such as their contact information and address
-   
-  If you do not have any of the above, you can still start the interview without them. Most people take about 15-20 minutes to complete this interview.
+  If you answered yes to both questions, you can go on.
 
-  ####After you finish this interview
-  When you are finished, you will need to file this petition with the Court, either by eFile using a valid email address or in person with the Clerk's office.
+  #### What to gather before you start
+
+  * Your lease, if you have one
+  * Your landlord's name, address, phone number, and email
+
+  You can still start without these. Most people finish in 10 to 20 minutes.
+
+  #### After you finish this interview
+
+  You must file this form with the court. You can file it online with a valid
+  email address. Or you can bring it to the clerk's office in person.
   
   ${ collapse_template(not_right_form_template) }
 ---
@@ -270,8 +277,7 @@ template: not_right_form_template
 subject: |
   Not the right form for you?
 content: |
-
-  If you need help but this is not an emergency situation, click the button to find a lawyer who may better assist you. 
+  Is this not an emergency? A lawyer may be able to help you instead.
 
   ${ btn_legal_services } 
 ---
@@ -281,37 +287,43 @@ continue button label: I understand
 question: |
   Before you ask the court for emergency help
 subquestion: |
- You can only ask for a **Temporary Restraining Order** or a **Short Order
-  of Notice** at the same time you file this complaint. They are part of
-  starting your case. You cannot add them to a case later.
+  You can only ask for a **temporary restraining order** or a **short order
+  of notice** when you file this complaint. They are part of starting your
+  case. You cannot add them later.
 
-  A **Preliminary Injunction** is different. You can ask for one when you
-  file this complaint, or later while your case is still open.
+  A **preliminary injunction** is different. You can ask for one now. You can
+  also ask for one later, while your case is open.
 ---
 id: assessment temporary restraining order
 question: |
   Do you need an immediate court order?
 subquestion: |
-  A judge can issue an order telling the other party to stop doing something right away.
-  
-  This can happen if you can show the court that you would face immediate harm or harm that cannot be undone if you had to wait for the other party to respond. 
-  
+  A judge can order your landlord to stop doing something right away.
+
+  To get this, you must show the court one of two things. You would be harmed
+  right away. Or the harm could not be undone if you had to wait for your
+  landlord to respond.
 fields:
-  - 'Does this sound like a harm you would face?': emergency_today
+  - 'Can you show one of these things?': emergency_today
     datatype: yesnoradio
 ---
 id: issue a tro
 question: |
-  It sounds like you may need a Temporary Restraining Order 
+  It sounds like you may need a Temporary Restraining Order
 subquestion: |
-  ## What is a Temporary Restraining Order?
-  An emergency court order telling the other party to stop doing something illegal or to fix a dangerous problem in the home right away. 
+  ## What is a temporary restraining order?
+
+  It is an emergency court order. It tells your landlord to stop breaking the
+  law or to fix a danger in your home right away.
 
   **How long does it last?**
-  A TRO works fast, but it only lasts for **10 days.** 
-  
-  **What happens after the 10 days?**
-  After that, both parties will need to go to a court hearing where you can request a preliminary injunction if you need a longer restraining order. 
+
+  Only 10 days.
+
+  **What happens next?**
+
+  Both sides go to a court hearing. There you can ask for a preliminary
+  injunction if you need more time.
 
   ${ collapse_template(extend_a_tro_template) }
 
@@ -323,10 +335,11 @@ id: assessment fast hearing
 question: |
   Do you need a judge to hear your case in the next few days?
 subquestion: |
-  Normally, court hearings take several weeks to schedule, but you can request to get your case heard sooner. 
+  Court hearings usually take several weeks to schedule. But you can ask the
+  court to hear your case sooner.
 
-  You will need to show the court that you will face immediate harm if you do not see the judge quickly. 
-  
+  You will need to show the court that you will be harmed right away if you do
+  not see the judge quickly.
 fields:
   - 'Is this something you can show?': emergency_soon_hearing
     datatype: yesnoradio
@@ -335,10 +348,12 @@ id: issue a short order of notice
 question: |
   It sounds like you may need a Short Order of Notice
 subquestion: |
-  ## What is a Short Order of Notice?
-  A Short Order of Notice can be used to bypass standard court timeline when a matter is urgent. 
-  
-  If you are facing an emergency, and cannot wait the standard amount of time you can request the court to shorten the waiting period, allowing the judge to hear your emergency request much sooner.
+  ## What is a short order of notice?
+
+  It makes the court act faster than usual.
+
+  Normally you wait weeks for a hearing. If you cannot wait that long, you can
+  ask the court to cut the wait. Then a judge can hear your case much sooner.
 
 fields:
   - 'Do you want to request a Short Order of Notice?': issue_a_son
@@ -348,32 +363,37 @@ template: extend_a_tro_template
 subject: |
   Can you extend a TRO?
 content: |
-  The order lasts no more than 10 days. A judge can extend it for another 10 days if there is a good reason or if your landlord agrees to extend it.
+  The order lasts no more than 10 days. A judge can add 10 more days if there
+  is a good reason. Your landlord can also agree to give you more time.
 ---
 id: assessment ongoing protection
 question: |
   Do you need ongoing protection?
 subquestion: |
-  You may ask the judge for a prolonged restraining order  which can last longer than the 10 days from a temporary restraining order. 
+  You can ask the judge for a longer restraining order. It can last more than
+  the 10 days a temporary restraining order gives you.
 
 fields:
-  - 'Does this sound like something you would need?': emergency_ongoing_protection
+  - 'Does this sound like something you need?': emergency_ongoing_protection
     datatype: yesnoradio
 ---
 terms:
   notify: |
-    By writing or orally
+    Tell them in writing or in person.
 ---
 id: request a preliminary injunction
 question: |
   It sounds like you may need to request a Preliminary Injunction
 subquestion: |
-  ## What is a Preliminary Injunction?
-  An extended court order that tells the other party to stop a harmful action. 
+  ## What is a preliminary injunction?
 
-  **How is it different from a Temporary Restraining Order?**
-  You must {notify} your landlord of this legal action and the injunction may last longer than 10 days.   
-  
+  It is a court order that tells your landlord to stop causing harm.
+
+  **How is it different from a temporary restraining order?**
+
+  You must {notify} your landlord that you asked for it. It can also last
+  longer than 10 days.
+
 fields:
   - 'Do you want to request a Preliminary Injunction?': request_a_pi
     datatype: yesnoradio
@@ -394,7 +414,7 @@ id: active eviction case
 question: |
   Is there an active eviction case against you?
 fields:
-  - no label: eviction_order
+  - no label: eviction_case
     datatype: yesnoradio
 ---
 id: active eviction order
@@ -406,7 +426,7 @@ fields:
 ---
 id: eviction logic
 code: |
-  if eviction_order or has_eviction_order:
+  if eviction_case or has_eviction_order:
       eviction_warning_seen
       eviction_case_yes = True
       eviction_case_no = False
@@ -420,13 +440,15 @@ id: eviction warning screen
 question: |
   Warning: Ongoing eviction case
 subquestion: |
-  If there is an active eviction case against you, use ${ btn_made } to find legal help. 
+  There is an eviction case or order against you. Get legal help if you can.
 
-  This site is not a lawyer find a lawyer. 
-  
+  ${ btn_made }
+
+  This website is not a lawyer.
+
   ${ btn_legal_services }
-  
-  However, you are still allowed to proceed with this interview and generate your forms if you would like to continue.
+
+  You can still finish this interview and make your forms.
 continue button field: eviction_warning_seen
 ---
 id: your contact information
@@ -462,10 +484,9 @@ fields:
     input type: area
     required: False
     help: |
-      If you do not have a phone number or email, provide
-      specific contact instructions. For example, use a friend's phone number.
-      But the friend must be someone you can rely on to give you a
-      message.
+      If you do not have a phone number or email, tell us how to reach you.
+      For example, you can use a friend's phone number. But it must be a
+      friend you trust to give you the message.
 validation code: |
   if (
     not showifdef("users[0].phone_number")
@@ -487,7 +508,7 @@ fields:
   - Docket number: docket_number
     hide if: dont_know_docket_number  
 validation code: |
-  # This should be safe to 
+  # Set an empty docket number so downstream templates still resolve
   if dont_know_docket_number:
     docket_number = '' 
 ---
@@ -496,7 +517,7 @@ section: case_information
 question: |
   What happened?
 subquestion: |
-  Briefly describe what happened, including the date and time it occurred.
+  Briefly describe what happened. Include the date and time it happened.
 fields:
   - no label: facts_description
     input type: area
@@ -505,64 +526,70 @@ id: What Happened
 question: |
   What problems are you having?
 subquestion: |
-  Select any of the following that apply to your situation.
+  Check any of these that match your situation.
 fields:
-  - 'The contract was breached': violation_breach_contract
+  - 'My landlord broke the lease': violation_breach_contract
     datatype: yesno
     help: |
-      The other party did not follow the terms of the lease, addendum, or other contractual document between you two. 
-  - 'The utilities were interfered with': utilities_needed
-    datatype: yesno
-  - 'The home has unsafe or unsanitary conditions': violation_bad_conditions
-    datatype: yesno
-  - 'Other': other_issues
+      Your landlord broke a rule in your lease. Or in another written
+      agreement you signed.
+  - 'My landlord shut off my utilities': violation_utilities
     datatype: yesno
     help: |
-      Other issues may include odor or noise that would make the home unlivable. 
-  - 'Description': other_issues_type
+      This can include heat, hot water, gas, or electricity.
+  - 'My home is not safe or clean enough to live in': violation_bad_conditions
+    datatype: yesno
+  - 'Something else': other_issues
+    datatype: yesno
+    help: |
+      Other problems can include bad smells or loud noise that make the home
+      hard to live in.
+  - 'Describe the problem': other_issues_type
     datatype: text
     show if: other_issues
 validation code: |
-  if not violation_breach_contract and not utilities_needed and not violation_bad_conditions and not other_issues:
-    validation_error("You must select at least one incident.")
+  if not violation_breach_contract and not violation_utilities and not violation_bad_conditions and not other_issues:
+    validation_error("You must check at least one problem.")
 help: |
-  If none of these sound like your situation, this interview may not apply to you. Find resources that may best assist you.
+  If none of these match your situation, this interview may not be right for
+  you. A lawyer may be able to help you instead.
   
   <a href="https://www.mass.gov/info-details/finding-a-lawyer" target="_blank" class="btn btn-warning">Find a Lawyer</a>
 ---
 id: Court Request
 question: |
-  Your request to the Court
+  Your request to the court
 subquestion: |
-  Based on what you told us:
+  Here is what you told us:
 
   % if violation_breach_contract:
-  * Your contract was breached
+  * Your landlord broke your lease
   % endif
-  % if utilities_needed:
-  * Your utilities were interfered with
+  % if violation_utilities:
+  * Your landlord shut off your utilities
   % endif
   % if violation_bad_conditions:
-  * The home has unsafe or unsanitary conditions
+  * Your home is not safe or clean enough to live in
   % endif
 
-  We have checked what you may want the Court to order the other party to do. Review the selection and check any others you would like to add.
+  We checked the boxes below that match your problems. Check any others you
+  want to add.
 
 fields:
-  - 'Stop trying to evict me without court order': stop_eviction
+  - 'Stop trying to evict me without a court order': stop_eviction
     datatype: yesno
-  - 'Provide utilities to the home': utilities_needed
+  - 'Turn my utilities back on': utilities_needed
     datatype: yesno
-    default: ${ utilities_needed }
-  - 'What utilities need to be restored?': utilities_needed_type
+    default: ${ violation_utilities }
+  - 'Which utilities need to be turned back on?': utilities_needed_type
     datatype: text
     show if: utilities_needed
   - 'Make repairs to my home': stop_fail_repairs
     datatype: yesno
     default: ${ violation_bad_conditions }
-  - 'Return my belongings': stop_return_belongings
+  - 'Give back my belongings': stop_return_belongings
     datatype: yesno
-  - 'Other request for the court': other_court_request
+  - 'Something else': other_court_request
     datatype: yesno
   - 'What do you want the court to do?': other_court_request_type
     datatype: text
@@ -570,23 +597,21 @@ fields:
 ---
 id: Your Request
 question: |
-  Your Request
-mandatory: false
+  Your request
 subquestion: |
-  You told us about the following problems:
+  You told us about these problems:
 
   % if violation_breach_contract:
-  * Your landlord breached your lease agreement
+  * Your landlord broke your lease
   % endif
-  % if utilities_needed:
-  * Your landlord shut off your utilities or did not pay for utilities they 
-  are required to pay
+  % if violation_utilities:
+  * Your landlord shut off your utilities or did not pay the utility bill
   % endif
   % if violation_bad_conditions:
-  * Your landlord breached your implied warranty of habitability by not making necessary repairs
+  * Your landlord did not make repairs to keep your home safe
   % endif  
 
-  **Based on what you told us, tell the court exactly what you want your landlord to do or stop doing.**
+  **Now tell the court what you want your landlord to do or stop doing.**
 
 fields: 
  - no label: plaintiff_request
@@ -612,13 +637,14 @@ code: |
 ---
 id: Fee Waiver
 question: |
-  Would you like to apply for a fee waiver
+  Do you want to ask the court to waive your fees?
+subquestion: |
+  A fee waiver is also called an affidavit of indigency. If the court grants
+  it, you do not have to pay the filing fee, court fees, or the cost of
+  service.
 fields:
   - no label: indigency_q
     datatype: yesnoradio
-auto terms:
-  fee waiver: |
-   A fee waiver also known as a affidavit of indigency for all the fees and costs required to start a case and continue it such filing fees, court fees, and service costs.
 ---
 id: preview verified_complaint_and_request_for
 section: review_answers
@@ -779,9 +805,10 @@ event: verified_complaint_and_request_for_download
 question: |
   All done
 subquestion: |
-  Thank you ${users}. Your form is ready to download and deliver.
+  Thank you ${users}. Your forms are ready to download and deliver.
   
-  View, download and send your form below. Click the "Edit answers" button to fix any mistakes.
+  View, download, and send your forms below. Click the "Edit answers" button
+  to fix any mistakes.
 
   ${ action_button_html(url_action('review_verified_complaint_and_request_for'), label='Edit answers', color='info') }
   
@@ -796,9 +823,10 @@ event: temporary_restraining_order_download
 question: |
   All done
 subquestion: |
-  Thank you ${users}. Your form is ready to download and deliver.
+  Thank you ${users}. Your forms are ready to download and deliver.
   
-  View, download and send your form below. Click the "Edit answers" button to fix any mistakes.
+  View, download, and send your forms below. Click the "Edit answers" button
+  to fix any mistakes.
 
   ${ action_button_html(url_action('review_temporary_restraining_order'), label='Edit answers', color='info') }
   
@@ -818,7 +846,7 @@ objects:
   - temporary_restraining_order_Post_interview_instructions: ALDocument.using(title="TRO Next Steps", filename="temporary_restraining_order_next_steps.docx", enabled=issue_a_tro, has_addendum=False)
   - temporary_restraining_order_attachment: ALDocument.using(title="Temporary Restraining Order", filename="temporary_restraining_order", enabled=issue_a_tro, has_addendum=False)
 
-  # 3. Create the Consolidated 0Bundles
+  # 3. Create the consolidated bundles
   - al_user_bundle: ALDocumentBundle.using(elements=[verified_complaint_and_request_for_Post_interview_instructions, verified_complaint_and_request_for_attachment, temporary_restraining_order_Post_interview_instructions, temporary_restraining_order_attachment, affidavitofindigency_attachment], filename="emergency_relief_and_tro_user_bundle", title="All forms to download for your records", enabled=True)
   - al_court_bundle: ALDocumentBundle.using(elements=[verified_complaint_and_request_for_attachment, temporary_restraining_order_attachment, affidavitofindigency_attachment], filename="emergency_relief_and_tro_court_bundle", title="All forms to deliver to court", enabled=True)
 ---
