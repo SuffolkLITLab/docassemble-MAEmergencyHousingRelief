@@ -152,8 +152,8 @@ code: |
   
   nav.set_section("case_information")
   facts_description
+  violation_breach_contract
   utilities_needed
-  stop_fail_repairs 
 
   indigency_q
   nav.set_section("affidavit_of_indigency")
@@ -498,9 +498,9 @@ validation code: |
 id: Tell Us About the Case
 section: case_information
 question: |
-  What happened?
+  Explain why you want a restraining order or injunction
 subquestion: |
-  Briefly describe what happened. Include the date and time it happened.
+  Briefly describe the facts, dates, and events that have occurred.
 fields:
   - no label: facts_description
     input type: area
@@ -511,23 +511,15 @@ question: |
 subquestion: |
   Check any of these that match your situation.
 fields:
-  - 'My landlord broke the lease': violation_breach_contract
+  - 'My contract was breached': violation_breach_contract
     datatype: yesno
-    help: |
-      Your landlord broke a rule in your lease. Or in another written
-      agreement you signed.
-  - 'My landlord shut off my utilities': violation_utilities
+  - 'My utilities or services were interfered with': violation_utilities
     datatype: yesno
-    help: |
-      This can include heat, hot water, gas, or electricity.
-  - 'My home is not safe or clean enough to live in': violation_bad_conditions
+  - 'There are bad conditions in my home': violation_bad_conditions
     datatype: yesno
-  - 'Something else': other_issues
+  - 'Other': other_issues
     datatype: yesno
-    help: |
-      Other problems can include bad smells or loud noise that make the home
-      hard to live in.
-  - 'Describe the problem': other_issues_type
+  - 'Describe the issue': other_issues_type
     datatype: text
     show if: other_issues
 validation code: |
@@ -541,40 +533,25 @@ help: |
 ---
 id: Court Request
 question: |
-  Your request to the court
+  Your court request
 subquestion: |
-  Here is what you told us:
-
-  % if violation_breach_contract:
-  * Your landlord broke your lease
-  % endif
-  % if violation_utilities:
-  * Your landlord shut off your utilities
-  % endif
-  % if violation_bad_conditions:
-  * Your home is not safe or clean enough to live in
-  % endif
-
-  We checked the boxes below that match your problems. Check any others you
-  want to add.
+  Check what you want the court to order the other party to stop doing.
 
 fields:
-  - 'Stop trying to evict me without a court order': stop_eviction
+  - 'Stop attempting to evict me from my home without an order from the court': stop_eviction
     datatype: yesno
-  - 'Turn my utilities back on': utilities_needed
+  - 'Stop failing to provide the following utility or service to my home': utilities_needed
     datatype: yesno
-    default: ${ violation_utilities }
-  - 'Which utilities need to be turned back on?': utilities_needed_type
+  - 'What utilities need to be provided?': utilities_needed_type
     datatype: text
     show if: utilities_needed
-  - 'Make repairs to my home': stop_fail_repairs
+  - 'Stop failing to make all necessary repairs to my home': stop_fail_repairs
     datatype: yesno
-    default: ${ violation_bad_conditions }
-  - 'Give back my belongings': stop_return_belongings
+  - 'Stop refusing to return my personal belongings': stop_return_belongings
     datatype: yesno
-  - 'Something else': other_court_request
+  - 'Other': other_court_request
     datatype: yesno
-  - 'What do you want the court to do?': other_court_request_type
+  - 'Describe your request': other_court_request_type
     datatype: text
     show if: other_court_request
 ---
