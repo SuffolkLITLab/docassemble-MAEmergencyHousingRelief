@@ -108,6 +108,9 @@ code: |
   allowed_courts = ['Housing Court']
   nav.set_section("getting_started")
   temporary_restraining_order_intro
+
+  nav.set_section("eligibility_screening")
+  eviction_flow_complete
   
   nav.set_section("emergency_relief")
   emergency_relief_timing_warning
@@ -129,9 +132,6 @@ code: |
   else:
       request_a_pi = False 
   request_pi = request_a_pi
-  
-  nav.set_section("eligibility_screening")
-  eviction_flow_complete
   
   nav.set_section ("your_information")
   user_role = "plaintiff"
@@ -212,11 +212,8 @@ code: |
   addresses_to_search = [user.address for user in users.complete_elements()]
 ---
 code: |
-  btn_made = '<a href="https://www.mass.gov/info-details/eviction-legal-services-and-mediation" target="_blank" class="btn btn-primary">Eviction Help</a>'
-  btn_uptocode = '<a href="https://uptocode.org/" target="_blank" class="btn btn-info">UpToCode</a>'
   btn_legal_services = '<a href="https://www.mass.gov/info-details/finding-a-lawyer" target="_blank" class="btn btn-info">Find a Lawyer</a>'
   btn_public_housing = '<a href="https://www.mass.gov/how-to/report-hlc-program-concerns" target="_blank" class="btn btn-warning">Public Housing Help</a>'
-  btn_docket_number = '<a href="https://www.mass.gov/info-details/how-to-search-court-dockets?_gl=1*1t4lg0v*_ga*Mjc1NTYwNDQxLjE3NDE2MjkwMjA.*_" target="blank" class="btn btn-info">Find Your Docket Number</a>'
 ---
 terms: 
   housing emergency: |
@@ -429,19 +426,13 @@ code: |
   eviction_flow_complete = True
 ---
 id: eviction warning screen
+event: eviction_warning_seen
 question: |
-  Warning: Ongoing eviction case
+  Warning: Do not proceed
 subquestion: |
-  There is an eviction case or order against you. Get legal help if you can.
-
-  ${ btn_made }
-
-  This website is not a lawyer.
-
-  ${ btn_legal_services }
-
-  You can still finish this interview and make your forms.
-continue button field: eviction_warning_seen
+  If you are involved in an active eviction case or have an active eviction order against you, you cannot use this form. Do not complete it. If you have any questions, contact your local court clerk.
+buttons:
+  - Start over: restart
 ---
 id: your contact information
 section: your_information
