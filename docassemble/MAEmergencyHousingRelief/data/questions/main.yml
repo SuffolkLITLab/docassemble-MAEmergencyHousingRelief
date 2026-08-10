@@ -426,11 +426,13 @@ code: |
   eviction_flow_complete = True
 ---
 id: eviction warning screen
+event: eviction_warning_seen
 question: |
   Warning: Do not proceed
 subquestion: |
-  If you are involved in an active eviction case or have an active eviction order against you, you cannot use this form. Do not complete it. If you have any questions, contact your local court clerk
-continue button field: eviction_warning_seen
+  If you are involved in an active eviction case or have an active eviction order against you, you cannot use this form. Do not complete it. If you have any questions, contact your local court clerk.
+buttons:
+  - Start over: restart
 ---
 id: your contact information
 section: your_information
