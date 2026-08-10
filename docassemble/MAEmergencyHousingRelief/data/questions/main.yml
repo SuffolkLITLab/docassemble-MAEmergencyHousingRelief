@@ -3,7 +3,6 @@ include:
   - docassemble.ALMassachusetts:al_massachusetts.yml
   - docassemble.MassAccess:massaccess.yml
   - docassemble.ALAffidavitOfIndigency:affidavit_body.yml
-  - docassemble.MAHousingTRO:temporary_restraining_order.yml
 ---
 metadata:
   title: >-
@@ -109,6 +108,9 @@ code: |
   allowed_courts = ['Housing Court']
   nav.set_section("getting_started")
   temporary_restraining_order_intro
+
+  nav.set_section("eligibility_screening")
+  eviction_flow_complete
   
   nav.set_section("emergency_relief")
   emergency_relief_timing_warning
@@ -130,11 +132,6 @@ code: |
   else:
       request_a_pi = False 
   request_pi = request_a_pi
-  
-  nav.set_section("eligibility_screening")
-  eviction_flow_complete
-  if eviction_case_yes:
-      docket_number
   
   nav.set_section ("your_information")
   user_role = "plaintiff"
@@ -158,9 +155,6 @@ code: |
   utilities_needed
   stop_fail_repairs 
 
-  if issue_a_tro:
-      waiver_yes_no
-      plaintiff_request
   indigency_q
   nav.set_section("affidavit_of_indigency")
   if indigency_q:
@@ -195,7 +189,6 @@ code: |
       },
   )
   verified_complaint_and_request_for_download
-  temporary_restraining_order_download
 ---
 code: |
   al_intro_screen
@@ -210,7 +203,6 @@ code: |
           "reached_interview_end": True,
       },
   )
-  temporary_restraining_order_download
 ---
 code: |
   # This is a placeholder for the addresses that will be searched
@@ -220,11 +212,8 @@ code: |
   addresses_to_search = [user.address for user in users.complete_elements()]
 ---
 code: |
-  btn_made = '<a href="https://www.mass.gov/info-details/eviction-legal-services-and-mediation" target="_blank" class="btn btn-primary">Eviction Help</a>'
-  btn_uptocode = '<a href="https://uptocode.org/" target="_blank" class="btn btn-info">UpToCode</a>'
   btn_legal_services = '<a href="https://www.mass.gov/info-details/finding-a-lawyer" target="_blank" class="btn btn-info">Find a Lawyer</a>'
   btn_public_housing = '<a href="https://www.mass.gov/how-to/report-hlc-program-concerns" target="_blank" class="btn btn-warning">Public Housing Help</a>'
-  btn_docket_number = '<a href="https://www.mass.gov/info-details/how-to-search-court-dockets?_gl=1*1t4lg0v*_ga*Mjc1NTYwNDQxLjE3NDE2MjkwMjA.*_" target="blank" class="btn btn-info">Find Your Docket Number</a>'
 ---
 terms: 
   housing emergency: |
@@ -335,7 +324,7 @@ id: assessment fast hearing
 question: |
   Do you need a judge to hear your case in the next few days?
 subquestion: |
-  Court hearings usually take several weeks to schedule. But you can ask the
+  Court hearings usually take one to two weeks to schedule. But you can ask the
   court to hear your case sooner.
 
   You will need to show the court that you will be harmed right away if you do
@@ -352,7 +341,7 @@ subquestion: |
 
   It makes the court act faster than usual.
 
-  Normally you wait weeks for a hearing. If you cannot wait that long, you can
+  Normally you wait one to two weeks for a hearing. If you cannot wait that long, you can
   ask the court to cut the wait. Then a judge can hear your case much sooner.
 
 fields:
@@ -437,19 +426,13 @@ code: |
   eviction_flow_complete = True
 ---
 id: eviction warning screen
+event: eviction_warning_seen
 question: |
-  Warning: Ongoing eviction case
+  Warning: Do not proceed
 subquestion: |
-  There is an eviction case or order against you. Get legal help if you can.
-
-  ${ btn_made }
-
-  This website is not a lawyer.
-
-  ${ btn_legal_services }
-
-  You can still finish this interview and make your forms.
-continue button field: eviction_warning_seen
+  If you are involved in an active eviction case or have an active eviction order against you, you cannot use this form. Do not complete it. If you have any questions, contact your local court clerk.
+buttons:
+  - Start over: restart
 ---
 id: your contact information
 section: your_information
@@ -595,28 +578,6 @@ fields:
     datatype: text
     show if: other_court_request
 ---
-id: Your Request
-question: |
-  Your request
-subquestion: |
-  You told us about these problems:
-
-  % if violation_breach_contract:
-  * Your landlord broke your lease
-  % endif
-  % if violation_utilities:
-  * Your landlord shut off your utilities or did not pay the utility bill
-  % endif
-  % if violation_bad_conditions:
-  * Your landlord did not make repairs to keep your home safe
-  % endif  
-
-  **Now tell the court what you want your landlord to do or stop doing.**
-
-fields: 
- - no label: plaintiff_request
-   datatype: area
----
 code: |
   court_costs_amount = 135
 ---
@@ -657,12 +618,6 @@ subquestion: |
   ${ verified_complaint_and_request_for_attachment.as_pdf(key='preview') }<br>
   ${ action_button_html(url_action('review_verified_complaint_and_request_for'), label='Edit answers', color='info') }<br>
   
-  % if issue_a_tro:
-  **Temporary Restraining Order:**<br>
-  ${ temporary_restraining_order_attachment.as_pdf(key='preview') }<br>
-  ${ action_button_html(url_action('review_temporary_restraining_order'), label='Edit answers', color='info') }
-  % endif
-
   % if indigency_q and is_indigent:
   **Affidavit of Indigency:**<br>
   ${ affidavitofindigency_attachment.as_pdf(key='preview') }<br>
@@ -818,37 +773,12 @@ subquestion: |
 
   ${ al_user_bundle.send_button_html(show_editable_checkbox=True) }
 ---
-id: download temporary_restraining_order
-event: temporary_restraining_order_download
-question: |
-  All done
-subquestion: |
-  Thank you ${users}. Your forms are ready to download and deliver.
-  
-  View, download, and send your forms below. Click the "Edit answers" button
-  to fix any mistakes.
-
-  ${ action_button_html(url_action('review_temporary_restraining_order'), label='Edit answers', color='info') }
-  
-  
-  ${ al_user_bundle.download_list_html() }
-
-  ${ al_user_bundle.send_button_html(show_editable_checkbox=True) }
-
-progress: 100
----
 objects:
-  # 1. Define the Verified Complaint Documents
   - verified_complaint_and_request_for_Post_interview_instructions: ALDocument.using(title="Next Steps", filename="verified_complaint_and_request_for_next_steps.docx", enabled=True, has_addendum=False)
   - verified_complaint_and_request_for_attachment: ALDocument.using(title="Verified complaint and request for emergency relief", filename="verified_complaint_and_request_for", enabled=True, has_addendum=False)
-  
-  # 2. Define the Temporary Restraining Order Documents
-  - temporary_restraining_order_Post_interview_instructions: ALDocument.using(title="TRO Next Steps", filename="temporary_restraining_order_next_steps.docx", enabled=issue_a_tro, has_addendum=False)
-  - temporary_restraining_order_attachment: ALDocument.using(title="Temporary Restraining Order", filename="temporary_restraining_order", enabled=issue_a_tro, has_addendum=False)
 
-  # 3. Create the consolidated bundles
-  - al_user_bundle: ALDocumentBundle.using(elements=[verified_complaint_and_request_for_Post_interview_instructions, verified_complaint_and_request_for_attachment, temporary_restraining_order_Post_interview_instructions, temporary_restraining_order_attachment, affidavitofindigency_attachment], filename="emergency_relief_and_tro_user_bundle", title="All forms to download for your records", enabled=True)
-  - al_court_bundle: ALDocumentBundle.using(elements=[verified_complaint_and_request_for_attachment, temporary_restraining_order_attachment, affidavitofindigency_attachment], filename="emergency_relief_and_tro_court_bundle", title="All forms to deliver to court", enabled=True)
+  - al_user_bundle: ALDocumentBundle.using(elements=[verified_complaint_and_request_for_Post_interview_instructions, verified_complaint_and_request_for_attachment, affidavitofindigency_attachment], filename="emergency_relief_and_tro_user_bundle", title="All forms to download for your records", enabled=True)
+  - al_court_bundle: ALDocumentBundle.using(elements=[verified_complaint_and_request_for_attachment, affidavitofindigency_attachment], filename="emergency_relief_and_tro_court_bundle", title="All forms to deliver to court", enabled=True)
 ---
 attachment:
   name: Post-interview-Instructions
@@ -864,20 +794,4 @@ attachment:
   variable name: verified_complaint_and_request_for_attachment[i]
   skip undefined: True
   docx template file: verified_complaint_and_request_for.docx
-  tagged pdf: True
----
-attachment:
-  name: Post-interview-Instructions
-  filename: temporary_restraining_order_next_steps
-  docx template file: docassemble.MAHousingTRO:temporary_restraining_order_next_steps.docx
-  variable name: temporary_restraining_order_Post_interview_instructions[i]
-  skip undefined: True
-  tagged pdf: True
----
-attachment:
-  name: temporary restraining order
-  filename: temporary_restraining_order
-  variable name: temporary_restraining_order_attachment[i]
-  skip undefined: True
-  docx template file: docassemble.MAHousingTRO:temporary_restraining_order.docx
   tagged pdf: True
