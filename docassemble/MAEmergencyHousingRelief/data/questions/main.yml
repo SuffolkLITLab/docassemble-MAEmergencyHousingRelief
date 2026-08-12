@@ -113,13 +113,6 @@ code: |
   eviction_flow_complete
   
   nav.set_section("emergency_relief")
-  emergency_relief_timing_warning
-  emergency_today
-  if emergency_today:
-      issue_a_tro
-  else:
-      issue_a_tro = False
-  issue_tro = issue_a_tro
   emergency_soon_hearing
   if emergency_soon_hearing:
       issue_a_son
@@ -270,56 +263,6 @@ content: |
 
   ${ btn_legal_services } 
 ---
-id: emergency relief timing warning
-continue button field: emergency_relief_timing_warning
-continue button label: I understand
-question: |
-  Before you ask the court for emergency help
-subquestion: |
-  You can only ask for a **temporary restraining order** or a **short order
-  of notice** when you file this complaint. They are part of starting your
-  case. You cannot add them later.
-
-  A **preliminary injunction** is different. You can ask for one now. You can
-  also ask for one later, while your case is open.
----
-id: assessment temporary restraining order
-question: |
-  Do you need an immediate court order?
-subquestion: |
-  A judge can order your landlord to stop doing something right away.
-
-  To get this, you must show the court one of two things. You would be harmed
-  right away. Or the harm could not be undone if you had to wait for your
-  landlord to respond.
-fields:
-  - 'Can you show one of these things?': emergency_today
-    datatype: yesnoradio
----
-id: issue a tro
-question: |
-  It sounds like you may need a Temporary Restraining Order
-subquestion: |
-  ## What is a temporary restraining order?
-
-  It is an emergency court order. It tells your landlord to stop breaking the
-  law or to fix a danger in your home right away.
-
-  **How long does it last?**
-
-  Only 10 days.
-
-  **What happens next?**
-
-  Both sides go to a court hearing. There you can ask for a preliminary
-  injunction if you need more time.
-
-  ${ collapse_template(extend_a_tro_template) }
-
-fields:
-  - 'Do you want to request a TRO?': issue_a_tro
-    datatype: yesnoradio
----
 id: assessment fast hearing
 question: |
   Do you need a judge to hear your case in the next few days?
@@ -347,13 +290,6 @@ subquestion: |
 fields:
   - 'Do you want to request a Short Order of Notice?': issue_a_son
     datatype: yesnoradio
----
-template: extend_a_tro_template
-subject: |
-  Can you extend a TRO?
-content: |
-  The order lasts no more than 10 days. A judge can add 10 more days if there
-  is a good reason. Your landlord can also agree to give you more time.
 ---
 id: assessment ongoing protection
 question: |
