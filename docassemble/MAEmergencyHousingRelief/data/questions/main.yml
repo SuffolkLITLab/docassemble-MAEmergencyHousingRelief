@@ -113,6 +113,12 @@ code: |
   eviction_flow_complete
   
   nav.set_section("emergency_relief")
+  emergency_short_term_protection
+  if emergency_short_term_protection:
+      request_a_tro
+  else:
+      request_a_tro = False
+  request_tro = request_a_tro
   emergency_soon_hearing
   if emergency_soon_hearing:
       issue_a_son
@@ -263,6 +269,26 @@ content: |
 
   ${ btn_legal_services } 
 ---
+id: assessment short term protection
+question: |
+  Do you need short-term protection right away?
+subquestion: |
+  You can ask the judge for a Temporary Restraining Order. It gives you short-term protection to stop the landlord from causing harm right away.
+fields:
+  - 'Do you need short-term protection?': emergency_short_term_protection
+    datatype: yesnoradio
+---
+id: request a tro
+question: |
+  It sounds like you may need to request a Temporary Restraining Order
+subquestion: |
+  ## What is a temporary restraining order?
+  
+  It is a court order that gives you short-term protection to stop your landlord from causing immediate harm. It typically lasts up to 10 days until the court can hold a full hearing.
+fields:
+  - 'Do you want to request a Temporary Restraining Order?': request_a_tro
+    datatype: yesnoradio
+---
 id: assessment fast hearing
 question: |
   Do you need a judge to hear your case in the next few days?
@@ -273,7 +299,7 @@ subquestion: |
   You will need to show the court that you will be harmed right away if you do
   not see the judge quickly.
 fields:
-  - 'Is this something you can show?': emergency_soon_hearing
+  - 'Can you show the court that you will be harmed right away?': emergency_soon_hearing
     datatype: yesnoradio
 ---
 id: issue a short order of notice
@@ -293,18 +319,25 @@ fields:
 ---
 id: assessment ongoing protection
 question: |
-  Do you need ongoing protection?
+  Do you need ongoing protection for the entire case?
 subquestion: |
-  You can ask the judge for a longer restraining order. It can last more than
-  the 10 days a temporary restraining order gives you.
-
+  You can ask the judge for a Preliminary Injunction. It provides ongoing protection for the entire case, unlike a temporary restraining order which only gives short-term protection.
 fields:
-  - 'Does this sound like something you need?': emergency_ongoing_protection
+  - 'Do you need ongoing protection for the entire case?': emergency_ongoing_protection
     datatype: yesnoradio
 ---
 terms:
   notify: |
     Tell them in writing or in person.
+---
+id: assessment ongoing protection
+question: |
+  Do you need ongoing protection for the entire case?
+subquestion: |
+  You can ask the judge for a Preliminary Injunction. It provides ongoing protection for the entire case, unlike a temporary restraining order which only gives short-term protection.
+fields:
+  - 'Do you need ongoing protection for the entire case?': emergency_ongoing_protection
+    datatype: yesnoradio
 ---
 id: request a preliminary injunction
 question: |
@@ -316,9 +349,7 @@ subquestion: |
 
   **How is it different from a temporary restraining order?**
 
-  You must {notify} your landlord that you asked for it. It can also last
-  longer than 10 days.
-
+  A Preliminary Injunction provides ongoing protection for the entire case, while a Temporary Restraining Order is only for short-term protection. You must also {notify} your landlord that you asked for it.
 fields:
   - 'Do you want to request a Preliminary Injunction?': request_a_pi
     datatype: yesnoradio
